@@ -45,8 +45,8 @@ if (url.includes("/pages/")) {
           });
     } else {
       const staffEle = document.getElementById("staff-profiles-ele");
-      if (staffEle){
-        fetch(`https://e2437f784a9a.ngrok.io/api/pages/1/getStaff?shopDom=${shop}`, {
+      if (staffEle){ 
+        fetch(`https://e2437f784a9a.ngrok.io/api/pages/1/getStaff?shopDom=whole-page.myshopify.com`, {
           method: "GET",
         })
           .then((res) => res.json())
@@ -210,7 +210,7 @@ function setupPageForCollections() {
 if (url.includes('/products/') && pickedProducts && pickedProducts.includes(prodID)) {
     setupPageForPick();
 
-  fetch(`https://e2437f784a9a.ngrok.io/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
+  fetch(`https://e2437f784a9a.ngrok.io/api/front_end/show?shop=whole-page.myshopify.com&prodID=${meta.product.id}`, {
     method: "GET",
     })
   .then(res => res.json())
@@ -220,7 +220,7 @@ if (url.includes('/products/') && pickedProducts && pickedProducts.includes(prod
 }
 
 function setPicks (shop) {
-  fetch(`https://e2437f784a9a.ngrok.io/api/front_end?shop=${shop}`, {
+  fetch(`https://e2437f784a9a.ngrok.io/api/front_end?shop=whole-page.myshopify.com`, {
       method: "GET",
     })
       .then((res) => res.json())
@@ -244,28 +244,34 @@ function populateLocalStorage(data){
         }
       }
     }
-
-    if(origProducts.length > data["ids"].length){
-        let idsToDelete = origProducts.filter((x) => !data["ids"].includes(x));
-        for (var j = 0; j < collectionEles.length; j++) {
-            let ele = collectionEles[j];
-            let idCheck = parseInt(ele.dataset.prodid);
-            if (idsToDelete.includes(idCheck)) {
-                ele.innerHTML = "";
-            }
-        }
-    } else if (origProducts.length < data["ids"].length) {
-        let idsToAdd = data["ids"].filter((x) => !origProducts.includes(x));
-        let eles = document.getElementsByClassName("staff-pick-alert");
-        for (var e = 0; e < eles.length; e++) {
-          let ele = eles[e];
-          let idCheck = parseInt(ele.dataset.prodid);
-          if (idsToAdd.includes(idCheck)) {
-            collectionEles.push(ele);
-            insertPickPic(ele);
-          }
-        }
+    if(origProducts!=undefined){
+      checkForProductChanges(origProducts, data)
     }
+      
+}
+
+function checkForProductChanges(origProducts, data){
+  if(origProducts.length > data["ids"].length){
+          let idsToDelete = origProducts.filter((x) => !data["ids"].includes(x));
+          for (var j = 0; j < collectionEles.length; j++) {
+              let ele = collectionEles[j];
+              let idCheck = parseInt(ele.dataset.prodid);
+              if (idsToDelete.includes(idCheck)) {
+                  ele.innerHTML = "";
+              }
+          }
+      } else if (origProducts.length < data["ids"].length) {
+          let idsToAdd = data["ids"].filter((x) => !origProducts.includes(x));
+          let eles = document.getElementsByClassName("staff-pick-alert");
+          for (var e = 0; e < eles.length; e++) {
+            let ele = eles[e];
+            let idCheck = parseInt(ele.dataset.prodid);
+            if (idsToAdd.includes(idCheck)) {
+              collectionEles.push(ele);
+              insertPickPic(ele);
+            }
+          }
+      }
 }
 
 function getPicks (){
@@ -319,6 +325,7 @@ function setupPageForSideCol() {
             '#staff-pick-ele {' +
               'width: 80%;' +
               'margin: 20px auto;' +
+              'margin-bottom: 80px;' +
             '}' +
             '#staff-pick-ele img{' +
               'width: 160px;' +

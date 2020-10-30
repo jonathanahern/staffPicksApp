@@ -114,7 +114,7 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
                 margin-right: 8px;\n
             }\n
             .pick-container h4  {\n
-                margin: 6px 0;\n
+                margin: 0;\n
                 font-size: 18px;\n
             }\n
             @media screen and (max-width: 790px) {\n
