@@ -1,0 +1,1 @@
+json.extract! employee, :id, :name, :job_title, :description, :profile_url, :shop_id, :page_url

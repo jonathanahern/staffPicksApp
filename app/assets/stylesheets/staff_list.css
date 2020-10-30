@@ -1,0 +1,84 @@
+a {
+    text-decoration: none;
+    color: #212B36;
+}
+
+#div-container{
+    display:flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    min-height: 100px;
+    padding: 10px;
+}
+
+#div-container img {
+    align-self: flex-start;
+}
+
+#description-list{
+    display:flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    padding-left: 10px;
+}
+
+#job-title-list{
+    font-weight: 400;
+    margin-bottom: 100px;
+}
+
+.Polaris-ResourceItem__Button {
+    display:none;
+}
+
+#back-link{
+    color: #637381;
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+
+#back-link svg{
+    fill: #637381;
+    transform: translateY(5px);
+}
+
+#back-link:hover, #back-link svg{
+    color: #212B36;
+}
+
+.nav-bar-container{
+    border-bottom: .1rem solid #DFE3E8;
+    padding-left: 34px;
+    position: fixed;
+    top: 0px;
+    width:100%;
+    background-color: #F4F6F8;
+    z-index: 99999;
+
+}
+
+.nav-bar-link{
+    color: #637381;
+    padding: 16px 16px;
+    display: inline-block;
+    position: relative;
+}
+
+.nav-bar-link:hover{
+    color: inherit;
+}
+
+.link-underline {
+   position: absolute; 
+   width: 68%;
+   height: 3px;
+   background-color: #DFE3E8;
+   bottom: -3px;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   display: none;
+}
+
+.nav-bar-link:hover .link-underline{
+    display:block;
+}
