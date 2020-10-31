@@ -43,8 +43,10 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
 
   def destroy
     @employee = Employee.find(params[:id])
+    @products = @employee.products
     if @employee.destroy
       deletePage(@employee.shopify_page_id)
+      deletePicks()
     end
     render :show
   end
@@ -53,6 +55,17 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
 
     def employee_params
       params.require(:employee).permit(:name, :job_title, :description, :shop_id, :shopify_page_id, :profile_url)
+    end
+
+    def deletePicks
+      @products.each do |product|
+        prod=ShopifyAPI::Product.find(product.shopify_product_id)
+        newTags=prod.tags
+        newTags.sub!(', Staff Pick App', '')
+        newTags.sub!('Staff Pick App', '')
+        prod.tags = newTags
+        prod.save
+      end
     end
 
     def deletePage(pageID)
