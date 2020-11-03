@@ -10,6 +10,7 @@ module ShopifyApp
       job_args = { shop_domain: shop_domain, webhook: webhook_params.to_h }
       webhook_job_klass.perform_later(job_args)
       head(:ok)
+      Product.webhookChange(params[:id], params[:image][:src], params[:title]);
     end
 
     private

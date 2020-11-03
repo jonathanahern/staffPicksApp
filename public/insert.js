@@ -5,6 +5,7 @@ var pickedProducts = getPicks();
 var prodID = null;
 var pickAlreadyFound = false;
 var collectionEles = [];
+var recheckTime = 60;
 
 if (url.includes('/products/')) {
   prodID = meta.product.id;
@@ -14,18 +15,21 @@ if (url.includes('/products/')) {
 if (url.includes("/collections/") && !(url.includes('/products/'))) {
     setPicks(shop);
     let eles = document.getElementsByClassName("staff-pick-alert");
-    for (var i = 0; i < eles.length; i++) {
-        let ele = eles[i];
-        let idCheck = parseInt(ele.dataset.prodid);
-        if (pickedProducts.includes(idCheck)){
-            collectionEles.push(ele);
-            insertPickPic(ele);
-            if (!pickAlreadyFound){
-                pickAlreadyFound = true;
-                setupPageForCollections();
-            }
-        }
+    if (pickedProducts !== null){
+      for (var i = 0; i < eles.length; i++) {
+          let ele = eles[i];
+          let idCheck = parseInt(ele.dataset.prodid);
+          if (pickedProducts.includes(idCheck)){
+              collectionEles.push(ele);
+              insertPickPic(ele);
+              if (!pickAlreadyFound){
+                  pickAlreadyFound = true;
+                  setupPageForCollections();
+              }
+          }
+      }
     }
+
 }
 
 // PAGE CODE //
@@ -220,16 +224,21 @@ if (url.includes('/products/') && pickedProducts && pickedProducts.includes(prod
 }
 
 function setPicks (shop) {
-  fetch(`https://e2437f784a9a.ngrok.io/api/front_end?shop=whole-page.myshopify.com`, {
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then((resp) => {
-        populateLocalStorage(resp);
-      });
+  var secondDiff = getTimeDifference();
+  if (secondDiff >= recheckTime){
+    fetch(`https://e2437f784a9a.ngrok.io/api/front_end?shop=whole-page.myshopify.com`, {
+        method: "GET",
+      })
+        .then((res) => res.json())
+        .then((resp) => {
+          populateLocalStorage(resp);
+        });
+  }
 }
 
 function populateLocalStorage(data){
+    var startDate = new Date();
+    localStorage.setItem('updateTime-sp', JSON.stringify(startDate.getTime()));
     const origProducts = getPicks();
     const origSettings = localStorage.getItem("staffPicksSettings");
     localStorage.setItem("pickedProducts", JSON.stringify(data["ids"]));
@@ -244,13 +253,13 @@ function populateLocalStorage(data){
         }
       }
     }
-    if(origProducts!=undefined){
+    if(origProducts!=null){
       checkForProductChanges(origProducts, data)
-    }
-      
+    }    
 }
 
 function checkForProductChanges(origProducts, data){
+  console.log(getTimeDifference(), data["ids"]);
   if(origProducts.length > data["ids"].length){
           let idsToDelete = origProducts.filter((x) => !data["ids"].includes(x));
           for (var j = 0; j < collectionEles.length; j++) {
@@ -275,13 +284,27 @@ function checkForProductChanges(origProducts, data){
 }
 
 function getPicks (){
-    let data = localStorage.getItem('pickedProducts');
-    if (data === "undefined" || data === null) {
-        return undefined
-    } else {
-        let newData = JSON.parse(data)
-        return Object.values(newData)
-    }
+  let data=localStorage.getItem('pickedProducts');
+  if (data == null) {
+      return null
+  } else {
+      let newData = JSON.parse(data)
+      return Object.values(newData)
+  }
+}
+
+function getTimeDifference(){
+  let updateTime = localStorage.getItem('updateTime-sp');
+  if (updateTime == null){
+    var startDate = new Date();
+    localStorage.setItem('updateTime-sp', JSON.stringify(startDate.getTime()));
+    return recheckTime;
+  } else {
+    oldTime = JSON.parse(updateTime);
+    newTime = new Date();
+    var seconds = (newTime.getTime()-oldTime) / 1000;
+    return Math.abs(seconds);
+  }
 }
 
 function setupPageForPick(){

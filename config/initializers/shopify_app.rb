@@ -13,7 +13,7 @@ ShopifyApp.configure do |config|
     {event:'onload', src: 'https://e2437f784a9a.ngrok.io/insert.js'}
   ]
   config.webhooks = [
-    {topic: 'products/update', address: 'https://e2437f784a9a.ngrok.io/webhooks/products_update', format: 'json'},
+    {topic: 'products/update', address: 'https://e2437f784a9a.ngrok.io/webhooks/products_update', fields: ['id','image', 'title'], format: 'json'},
   ]
 end
 

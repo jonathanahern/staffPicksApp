@@ -222,6 +222,10 @@ class Settings extends Component {
       />
     );
 
+    const none = (
+      <h4>None</h4>
+    );
+
     const stickerInsertion = `<!-- <img>  The product image -->
 <div class="staff-pick-alert" data-prodID="{{ product.id }}"></div>`;
 
@@ -289,6 +293,12 @@ class Settings extends Component {
                 label={yellow}
                 id="yellow"
                 checked={selected === "yellow"}
+                onChange={this.handleStickerChange}
+              />
+              <RadioButton
+                label={none}
+                id="none"
+                checked={selected === "none"}
                 onChange={this.handleStickerChange}
               />
             </Stack>
