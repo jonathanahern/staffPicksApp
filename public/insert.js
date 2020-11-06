@@ -5,7 +5,7 @@ var pickedProducts = getPicks();
 var prodID = null;
 var pickAlreadyFound = false;
 var collectionEles = [];
-var recheckTime = 60;
+var recheckTime = 5;
 
 if (url.includes('/products/')) {
   prodID = meta.product.id;
@@ -13,23 +13,8 @@ if (url.includes('/products/')) {
 }
 
 if (url.includes("/collections/") && !(url.includes('/products/'))) {
-    setPicks(shop);
-    let eles = document.getElementsByClassName("staff-pick-alert");
-    if (pickedProducts !== null){
-      for (var i = 0; i < eles.length; i++) {
-          let ele = eles[i];
-          let idCheck = parseInt(ele.dataset.prodid);
-          if (pickedProducts.includes(idCheck)){
-              collectionEles.push(ele);
-              insertPickPic(ele);
-              if (!pickAlreadyFound){
-                  pickAlreadyFound = true;
-                  setupPageForCollections();
-              }
-          }
-      }
-    }
-
+  setPicks(shop);
+  loadInStickers();
 }
 
 // PAGE CODE //
@@ -131,12 +116,31 @@ function createProducts(container, data) {
 
 
 // COLLECTIONS PAGE CODE //
+function loadInStickers(){
+    const settings = localStorage.getItem("staffPicksSettings");
+    let sticker = settings == null ? null : JSON.parse(settings)["sticker"];
+    const eles = document.getElementsByClassName("staff-pick-alert");
+    if (pickedProducts !== null && sticker !== "none"){
+      for (var i = 0; i < eles.length; i++) {
+          let ele = eles[i];
+          let idCheck = parseInt(ele.dataset.prodid);
+          if (pickedProducts.includes(idCheck)){
+              collectionEles.push(ele);
+              insertPickPic(ele);
+              if (!pickAlreadyFound){
+                  pickAlreadyFound = true;
+                  setupPageForCollections();
+              }
+          }
+      }
+    }
+}
 
 function insertPickPic(ele) {
   
   let container = document.createElement("div");
   container.className = "starburst-container";
-  container.style.margin = "15px";
+  container.style.margin = "2px";
   ele.appendChild(container);
 
   let circle = document.createElement("img");
@@ -145,7 +149,7 @@ function insertPickPic(ele) {
   
   container.appendChild(circle);
 
-  let text = document.createElement("h4");
+  let text = document.createElement("p");
   text.innerHTML = "STAFF<br/>PICK!";
   text.className = "staff-pick-lettering";
   
@@ -153,7 +157,8 @@ function insertPickPic(ele) {
 }
 
 function loadStickerImage(){
-    let settings = JSON.parse(localStorage.getItem("staffPicksSettings"));
+  let settings = JSON.parse(localStorage.getItem("staffPicksSettings"));
+
     switch (settings["sticker"]) {
       case "red":
         return "https://i.ibb.co/3kW5XsV/red-burst.png";
@@ -180,19 +185,21 @@ function setupPageForCollections() {
         "width: 40%;" +
         "max-width: 70px;" +
     "}" +
-    ".staff-pick-alert h4 {" +
+    ".staff-pick-alert p {" +
         "position: absolute;" +
         "transform: translate(50%, -50%);" +
-        "top: 46%;" +
-        "right: 51%;" +
+        "top: 49%;" +
+        "right: 49%;" +
         "color: white;" +
         "text-align: center;" +
         "font-size: .80em;" +
-        "text-shadow: 1px 1px #000000" +
+        "line-height: 1.3;" +
+        // "text-shadow: 1px 1px #555555" + 
     "}" +
     "@media screen and (max-width: 500px) {" +
-        ".staff-pick-alert h4 {" +
-            "font-size: .80em;" +
+        ".staff-pick-alert p {" +
+            "font-size: .65em;" +
+            "right: 48%;" +
         "}" +
         ".starburst-container {" +
           "max-width: 55px;" +
@@ -242,24 +249,30 @@ function populateLocalStorage(data){
     const origProducts = getPicks();
     const origSettings = localStorage.getItem("staffPicksSettings");
     localStorage.setItem("pickedProducts", JSON.stringify(data["ids"]));
+
     localStorage.setItem("staffPicksSettings", JSON.stringify(data["settings"]));
 
+    let oldSticker = origSettings == null ? "nothing" : JSON.parse(origSettings)["sticker"]
 
-    if (data["settings"] == null){
-      if (data["settings"]["sticker"] !== JSON.parse(origSettings)["sticker"]){
+    if (data["settings"]["sticker"] !== oldSticker){
+      pickedProducts = getPicks();
+      if (oldSticker === "nothing"){
+      loadInStickers();
+      } else {
         let eles = document.getElementsByClassName("sticker-img");
         for (let i = 0; i < eles.length; i++) {
           eles[i].src = loadStickerImage();
         }
       }
     }
+    
     if(origProducts!=null){
       checkForProductChanges(origProducts, data)
     }    
 }
 
 function checkForProductChanges(origProducts, data){
-  console.log(getTimeDifference(), data["ids"]);
+  console.log(origProducts, data["ids"]);
   if(origProducts.length > data["ids"].length){
           let idsToDelete = origProducts.filter((x) => !data["ids"].includes(x));
           for (var j = 0; j < collectionEles.length; j++) {
@@ -272,6 +285,7 @@ function checkForProductChanges(origProducts, data){
       } else if (origProducts.length < data["ids"].length) {
           let idsToAdd = data["ids"].filter((x) => !origProducts.includes(x));
           let eles = document.getElementsByClassName("staff-pick-alert");
+          console.log(eles, "Found an add");
           for (var e = 0; e < eles.length; e++) {
             let ele = eles[e];
             let idCheck = parseInt(ele.dataset.prodid);
