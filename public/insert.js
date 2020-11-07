@@ -35,7 +35,7 @@ if (url.includes("/pages/")) {
     } else {
       const staffEle = document.getElementById("staff-profiles-ele");
       if (staffEle){ 
-        fetch(`https://e2437f784a9a.ngrok.io/api/pages/1/getStaff?shopDom=whole-page.myshopify.com`, {
+        fetch(`https://e2437f784a9a.ngrok.io/api/pages/1/getStaff?shopDom=${shop}`, {
           method: "GET",
         })
           .then((res) => res.json())
@@ -221,7 +221,7 @@ function setupPageForCollections() {
 if (url.includes('/products/') && pickedProducts && pickedProducts.includes(prodID)) {
     setupPageForPick();
 
-  fetch(`https://e2437f784a9a.ngrok.io/api/front_end/show?shop=whole-page.myshopify.com&prodID=${meta.product.id}`, {
+  fetch(`https://e2437f784a9a.ngrok.io/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
     method: "GET",
     })
   .then(res => res.json())
@@ -233,7 +233,7 @@ if (url.includes('/products/') && pickedProducts && pickedProducts.includes(prod
 function setPicks (shop) {
   var secondDiff = getTimeDifference();
   if (secondDiff >= recheckTime){
-    fetch(`https://e2437f784a9a.ngrok.io/api/front_end?shop=whole-page.myshopify.com`, {
+    fetch(`https://e2437f784a9a.ngrok.io/api/front_end?shop=${shop}`, {
         method: "GET",
       })
         .then((res) => res.json())
@@ -272,7 +272,6 @@ function populateLocalStorage(data){
 }
 
 function checkForProductChanges(origProducts, data){
-  console.log(origProducts, data["ids"]);
   if(origProducts.length > data["ids"].length){
           let idsToDelete = origProducts.filter((x) => !data["ids"].includes(x));
           for (var j = 0; j < collectionEles.length; j++) {
@@ -285,7 +284,6 @@ function checkForProductChanges(origProducts, data){
       } else if (origProducts.length < data["ids"].length) {
           let idsToAdd = data["ids"].filter((x) => !origProducts.includes(x));
           let eles = document.getElementsByClassName("staff-pick-alert");
-          console.log(eles, "Found an add");
           for (var e = 0; e < eles.length; e++) {
             let ele = eles[e];
             let idCheck = parseInt(ele.dataset.prodid);
