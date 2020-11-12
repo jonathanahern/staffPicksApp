@@ -8,6 +8,7 @@ import ProductIndexContainer from "./product/product_index_container"
 import ProductNewContainer from "./product/product_new_container"
 import ProductEditContainer from "./product/product_edit_container";
 import SettingsContainer from "./settings/settings_container";
+import HelpContainer from "./help/help_container"
 
 const App = () => (
   <>
@@ -20,6 +21,8 @@ const App = () => (
     <Route path="/employees/:employeeId/edit" component={EmployeeEditContainer} />
     <Route exact path="/products/new" component={ProductNewContainer} />
     <Route path="/products/:productId/edit" component={ProductEditContainer} />
+    <Route exact path="/help" component={HelpContainer} />
+
 
     {/* <AuthRoute exact path="/" component={Splash} /> */}
   </>
