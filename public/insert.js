@@ -1,5 +1,5 @@
 var url = window.location.href;
-var shop = window.location.host;
+var shop = Shopify.shop;
 var handle = url.split("/").pop();
 var pickedProducts = getPicks();
 var prodID = null;
@@ -25,7 +25,7 @@ if (url.includes("/pages/")) {
 
     if (eles.length > 0){
         let staffid = eles[0].dataset.staffid.toString();
-        fetch(`https://e2437f784a9a.ngrok.io/api/pages?employeeid=${staffid}`, {
+        fetch(`https://ec513accccc9.ngrok.io/api/pages?employeeid=${staffid}`, {
           method: "GET",
         })
           .then((res) => res.json())
@@ -35,7 +35,7 @@ if (url.includes("/pages/")) {
     } else {
       const staffEle = document.getElementById("staff-profiles-ele");
       if (staffEle){ 
-        fetch(`https://e2437f784a9a.ngrok.io/api/pages/1/getStaff?shopDom=${shop}`, {
+        fetch(`https://ec513accccc9.ngrok.io/api/pages/1/getStaff?shopDom=${shop}`, {
           method: "GET",
         })
           .then((res) => res.json())
@@ -182,19 +182,18 @@ function setupPageForCollections() {
         "position: absolute;" +
         "top: 0px;" +
         "right: 0px;" +
-        "width: 40%;" +
+        "width: 60px;" +
         "max-width: 70px;" +
     "}" +
     ".staff-pick-alert p {" +
         "position: absolute;" +
         "transform: translate(50%, -50%);" +
-        "top: 49%;" +
+        "top: 50%;" +
         "right: 49%;" +
         "color: white;" +
         "text-align: center;" +
-        "font-size: .80em;" +
+        "font-size: .70em;" +
         "line-height: 1.3;" +
-        // "text-shadow: 1px 1px #555555" + 
     "}" +
     "@media screen and (max-width: 500px) {" +
         ".staff-pick-alert p {" +
@@ -221,7 +220,7 @@ function setupPageForCollections() {
 if (url.includes('/products/') && pickedProducts && pickedProducts.includes(prodID)) {
     setupPageForPick();
 
-  fetch(`https://e2437f784a9a.ngrok.io/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
+  fetch(`https://ec513accccc9.ngrok.io/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
     method: "GET",
     })
   .then(res => res.json())
@@ -233,7 +232,7 @@ if (url.includes('/products/') && pickedProducts && pickedProducts.includes(prod
 function setPicks (shop) {
   var secondDiff = getTimeDifference();
   if (secondDiff >= recheckTime){
-    fetch(`https://e2437f784a9a.ngrok.io/api/front_end?shop=${shop}`, {
+    fetch(`https://ec513accccc9.ngrok.io/api/front_end?shop=${shop}`, {
         method: "GET",
       })
         .then((res) => res.json())

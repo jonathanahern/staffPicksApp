@@ -46,12 +46,12 @@ class EmployeeIndex extends React.Component {
     }
 
     return (
-      <Link to={`/employees/${id}/edit`}>
-        <ResourceList.Item
+      <ResourceList.Item
           id={id}
           // url={'/employee/edit'}
           accessibilityLabel={`details for ${name} `}
         >
+        <Link to={`/employees/${id}/edit`}>
           <div id="div-container">
             <img src={profile_url} style={{ width: "60px" }} />
             <div id="description-list">
@@ -63,8 +63,8 @@ class EmployeeIndex extends React.Component {
               <TextStyle> {descriptionEdit} </TextStyle>
             </div>
           </div>
+          </Link>
         </ResourceList.Item>
-      </Link>
     );
   }
 

@@ -142,6 +142,8 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
         </style>"
       if @page.save
         employee.update(:shopify_page_id => @page.id, :page_url => @page.handle);
+        # ShopifyAPI::Collection.find(165897109571)
+        # ShopifyAPI::Collection.find(165012111427)
         return true
       else
         return false

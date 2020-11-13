@@ -58,11 +58,11 @@ class ProductIndex extends React.Component {
     let title = `${name}'s ${shopify_title} review:`;
 
     return (
-      <Link to={`/products/${id}/edit`}>
-        <ResourceList.Item
+      <ResourceList.Item
           id={id}
           accessibilityLabel={`details for ${shopify_title} `}
         >
+        <Link to={`/products/${id}/edit`}>
           <div id="div-container">
             <img src={shopify_image_url} style={{ width: "60px" }} />
             <div id="description-list">
@@ -70,8 +70,8 @@ class ProductIndex extends React.Component {
               <TextStyle> {review} </TextStyle>
             </div>
           </div>
+          </Link>
         </ResourceList.Item>
-      </Link>
     );
   }
 
