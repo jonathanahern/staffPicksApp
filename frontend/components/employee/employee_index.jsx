@@ -1,6 +1,6 @@
 import React from "react"
 import {Link} from "react-router-dom"
-import { AppProvider , Page , TextStyle , Card , ResourceList, Button, Spinner }
+import { AppProvider , Page , TextStyle , Card , ResourceList, Button, Stack, Spinner, Pagination }
 from '@shopify/polaris' ;
 
 
@@ -11,6 +11,8 @@ class EmployeeIndex extends React.Component {
       loaded: false,
       limitReach: false,
       limitError: "",
+      pageTotal: 0,
+      currentPage: 1,
     };
     this.checkTotal = this.checkTotal.bind(this);
     this.goToNewStaff = this.goToNewStaff.bind(this);
@@ -22,14 +24,58 @@ class EmployeeIndex extends React.Component {
 
   checkTotal() {
     this.setState({ loaded: true });
-    if (this.props.employees.length >= 12) {
+    var pageTotal = Math.ceil(this.props.employees.length / 12);
+    this.setState({ pageTotal: pageTotal });
+
+    if (this.props.employees.length >= 24) {
       this.setState({ limitReach: true });
       this.setState({ limitError: "You have reached your limit of staff" });
     }
+
   }
 
   goToNewStaff(){
     this.props.history.push("/employee/new");
+  }
+
+  nextPage(){
+    if (this.state.currentPage<this.state.pageTotal){
+      var newCurrent = this.state.currentPage + 1;
+      this.setState({ currentPage: newCurrent });
+    }
+  }
+
+  prevPage(){
+    if (this.state.currentPage>1){
+      var newCurrent = this.state.currentPage - 1;
+      this.setState({ currentPage: newCurrent });
+    }
+  }
+
+  pageCount(){
+    if (this.state.pageTotal > 1){
+      return(
+            <div className="pagination-bottom">
+              <Stack>
+                <div id="pagination-numbering">
+                  <TextStyle  variation="subdued">Page {this.state.currentPage} of {this.state.pageTotal}</TextStyle>
+                </div>
+                <Pagination
+                    hasPrevious
+                    onPrevious={() => {
+                      this.prevPage();
+                    }}
+                    hasNext
+                    onNext={() => {
+                      this.nextPage();
+                    }}
+                  />
+              </Stack>
+            </div>
+      );
+    } else {
+      return("");
+    }
   }
 
   renderStaff(staff) {
@@ -70,6 +116,9 @@ class EmployeeIndex extends React.Component {
 
   render() {
     const { employees } = this.props;
+    const indexi = [ [0,12], [12,24] ]
+    const employeesPortion = employees.slice(indexi[this.state.currentPage-1][0],indexi[this.state.currentPage-1][1]);
+    console.log(employeesPortion);
     const { limitError, limitReach } = this.state;
 
     let noStaff = "";
@@ -124,9 +173,11 @@ class EmployeeIndex extends React.Component {
           <Card>
             <ResourceList
               showHeader
-              items={employees}
+              items={employeesPortion}
               renderItem={this.renderStaff}
-            ></ResourceList>
+            >
+            </ResourceList>
+            {this.pageCount()}
           </Card>
           <br />
 

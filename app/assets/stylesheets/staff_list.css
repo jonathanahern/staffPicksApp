@@ -82,3 +82,11 @@ a {
 .nav-bar-link:hover .link-underline{
     display:block;
 }
+
+.pagination-bottom{
+    padding: 20px;
+}
+
+#pagination-numbering{
+    padding-top:8px !important;
+}
