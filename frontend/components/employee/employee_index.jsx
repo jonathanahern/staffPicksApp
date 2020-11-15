@@ -118,7 +118,6 @@ class EmployeeIndex extends React.Component {
     const { employees } = this.props;
     const indexi = [ [0,12], [12,24] ]
     const employeesPortion = employees.slice(indexi[this.state.currentPage-1][0],indexi[this.state.currentPage-1][1]);
-    console.log(employeesPortion);
     const { limitError, limitReach } = this.state;
 
     let noStaff = "";

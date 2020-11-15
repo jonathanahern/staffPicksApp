@@ -8,7 +8,9 @@ import {
   Card,
   ResourceList,
   Button,
-  Spinner
+  Pagination,
+  Spinner,
+  Stack
 } from "@shopify/polaris";
 
 
@@ -19,6 +21,8 @@ class ProductIndex extends React.Component {
       loaded: false,
       limitReach: false,
       limitError: "",
+      pageTotal: 0,
+      currentPage: 1,
     };
     this.renderProduct = this.renderProduct.bind(this);
     this.checkTotal = this.checkTotal.bind(this);
@@ -32,7 +36,10 @@ class ProductIndex extends React.Component {
 
   checkTotal() {
     this.setState({ loaded: true });
-    if (this.props.employees.length >= 36) {
+    var pageTotal = Math.ceil(this.props.products.length / 15);
+    this.setState({ pageTotal: pageTotal });
+
+    if (this.props.products.length >= 100) {
       this.setState({ limitReach: true });
       this.setState({ limitError: "You have reached your limit of picks" });
     }
@@ -40,6 +47,46 @@ class ProductIndex extends React.Component {
 
   goToNewPick() {
     this.props.history.push("/products/new");
+  }
+
+  nextPage(){
+    if (this.state.currentPage<this.state.pageTotal){
+      var newCurrent = this.state.currentPage + 1;
+      this.setState({ currentPage: newCurrent });
+    }
+  }
+
+  prevPage(){
+    if (this.state.currentPage>1){
+      var newCurrent = this.state.currentPage - 1;
+      this.setState({ currentPage: newCurrent });
+    }
+  }
+
+  pageCount(){
+    if (this.state.pageTotal > 1){
+      return(
+            <div className="pagination-bottom">
+              <Stack>
+                <div id="pagination-numbering">
+                  <TextStyle  variation="subdued">Page {this.state.currentPage} of {this.state.pageTotal}</TextStyle>
+                </div>
+                <Pagination
+                    hasPrevious
+                    onPrevious={() => {
+                      this.prevPage();
+                    }}
+                    hasNext
+                    onNext={() => {
+                      this.nextPage();
+                    }}
+                  />
+              </Stack>
+            </div>
+      );
+    } else {
+      return("");
+    }
   }
 
   renderProduct(product) {
@@ -55,7 +102,7 @@ class ProductIndex extends React.Component {
     if (Object.keys(employees).length > 0 && this.props.entities[0][employee_id] !== undefined) {
       name = this.props.entities[0][employee_id].name;
     }
-    let title = `${name}'s ${shopify_title} review:`;
+    let title = `${shopify_title} pick by ${name}`;
 
     return (
       <ResourceList.Item
@@ -77,6 +124,8 @@ class ProductIndex extends React.Component {
 
   render() {
     const { products } = this.props;
+    const indexi = [ [0,15], [15,30], [30,45], [45,60], [60,75], [75,90], [90,105] ]
+    const productsPortion = products.slice(indexi[this.state.currentPage-1][0],indexi[this.state.currentPage-1][1]);
     const { limitError, limitReach } = this.state;
 
     let noProducts = "";
@@ -131,9 +180,10 @@ class ProductIndex extends React.Component {
           <Card>
             <ResourceList
               showHeader
-              items={products}
+              items={productsPortion}
               renderItem={this.renderProduct}
             ></ResourceList>
+            {this.pageCount()}
           </Card>
           <br />
 
