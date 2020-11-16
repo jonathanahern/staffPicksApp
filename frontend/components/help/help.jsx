@@ -89,7 +89,7 @@ class Help extends Component {
         <br />
         <Page title="Help">
           <Card sectioned title="FAQs">
-            
+            <TextStyle>How can I format how the picks appear in my store?</TextStyle>
           </Card>
           <Card sectioned title="Contact">
             <TextStyle variation="subdued">If you have any trouble whatsoever, send me a message. I'd be happy to help.</TextStyle>

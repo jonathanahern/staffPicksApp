@@ -182,8 +182,7 @@ function setupPageForCollections() {
         "position: absolute;" +
         "top: 0px;" +
         "right: 0px;" +
-        "width: 60px;" +
-        "max-width: 70px;" +
+        "width: 58px;" +
     "}" +
     ".staff-pick-alert p {" +
         "position: absolute;" +
@@ -393,6 +392,7 @@ function setupPageForBottomPage() {
             'width: 160px;' +
             'float: left;' +
             'margin-right: 10px;' +
+            'margin-bottom: 10px;' +
         '}' +
         '#staff-pick-ele img:: after {' +
           'content: "";' +
