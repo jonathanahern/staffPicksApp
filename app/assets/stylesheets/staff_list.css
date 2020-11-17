@@ -90,3 +90,7 @@ a {
 #pagination-numbering{
     padding-top:8px !important;
 }
+
+.tabbed{
+    margin: 4px 0 8px 20px;
+}

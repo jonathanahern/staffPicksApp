@@ -103,15 +103,15 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
 
             .pick-container {\n
                 height: 320px;\n
-                width: 280px;\n
+                width: 33%;\n
                 border-bottom: none !important;\n
                 overflow: hidden; \n
+                padding-right: 12px; \n
             }\n
             .staff-picks-products {\n
                 width: 100%;\n
                 display: flex;\n
                 flex-wrap: wrap;\n
-                justify-content: space-between;\n
                 align-items: center;\n
             }\n
             .clearfix:: after {\n
@@ -137,6 +137,9 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
                 }\n
                 .staff-picks-products {\n
                   flex-direction: column;\n
+                }\n
+                .pick-container {\n
+                  width: 280px;\n
                 }\n
             };\n
         </style>"
