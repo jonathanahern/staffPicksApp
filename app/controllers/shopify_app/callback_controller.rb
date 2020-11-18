@@ -18,6 +18,24 @@ module ShopifyApp
 
       respond_successfully
     end
+    
+    def ​check_for_recurring_charge
+      ShopifyAPI::Session.setup(api_key: ShopifyApp.configuration.api_key, secret: ShopifyApp.configuration.secret)
+      session = ShopifyAPI::Session.new(domain: shop_name, token: token, api_version: "2020-10")
+      ShopifyAPI​::​Base​.​activate_session​(session)
+      ShopifyAPI::Base.api_version = ShopifyApp.configuration.api_version
+      result = ShopifyAPI​::​RecurringApplicationCharge​.current
+      debugger
+#       if​ ​result
+#         debugger
+#       else
+#         create_recurring_application_charge
+# ​      end
+    end
+
+    def create_recurring_application_charge
+      debugger
+    end
 
     private
 
@@ -25,7 +43,8 @@ module ShopifyApp
       if jwt_request?
         head(:ok)
       else
-        redirect_to(return_address)
+        ​check_for_recurring_charge
+        # redirect_to(return_address)
       end
     end
 

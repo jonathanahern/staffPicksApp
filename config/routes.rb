@@ -13,6 +13,8 @@ Rails.application.routes.draw do
       end
     end
 
+  get 'activatecharge', to: 'charges#activate_charge'
+
   root to: 'static_pages#root'
 
   mount ShopifyApp::Engine, at: '/'
