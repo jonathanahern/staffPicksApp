@@ -5,6 +5,7 @@ module ShopifyApp
   class CallbackController < ActionController::Base
     include ShopifyApp::LoginProtection
 
+
     def callback
       return respond_with_error if invalid_request?
 
@@ -20,25 +21,33 @@ module ShopifyApp
     end
     
     def ​check_for_recurring_charge
-      ShopifyAPI::Session.setup(api_key: ShopifyApp.configuration.api_key, secret: ShopifyApp.configuration.secret)
-      session = ShopifyAPI::Session.new(domain: shop_name, token: token, api_version: "2020-10")
-      ShopifyAPI​::​Base​.​activate_session​(session)
+      sess = ShopifyAPI::Session.new(domain: shop_name, token: token, api_version: "2020-10")
+      ShopifyAPI​::​Base​.​activate_session​(sess)
       ShopifyAPI::Base.api_version = ShopifyApp.configuration.api_version
-      result = ShopifyAPI​::​RecurringApplicationCharge​.current
-      debugger
-#       if​ ​result
-#         debugger
-#       else
-#         create_recurring_application_charge
-# ​      end
+      if​ ​ShopifyAPI​::​RecurringApplicationCharge​.current
+        redirect_to(return_address)
+      else
+        create_recurring_application_charge
+​      end
     end
 
     def create_recurring_application_charge
       debugger
+      # unless ShopifyAPI​::​RecurringApplicationCharge​.current
+      #   recurring_charge = ShopifyAPI::RecurringApplicationCharge.new(
+      #     name: "Staff Picks App",
+      #     price: 2.99,
+      #     test: true,
+      #     trial_days: 7,
+      #     return_url: "https://ec513accccc9.ngrok.io/activatecharge"
+      #   )
+      #   if recurring_charge.save
+      #     redirect_to(recurring_charge.confirmation_url)
+      #   end
+      # end
     end
 
-    private
-
+    
     def respond_successfully
       if jwt_request?
         head(:ok)
@@ -47,7 +56,8 @@ module ShopifyApp
         # redirect_to(return_address)
       end
     end
-
+    
+    private
     def respond_with_user_token_flow
       Rails.logger.debug("[ShopifyApp::CallbackController] Redirecting for user token...")
       redirect_to(login_url_with_optional_shop)

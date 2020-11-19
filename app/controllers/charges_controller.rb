@@ -8,7 +8,8 @@ class​ ​ChargesController < ShopifyApp::AuthenticatedController
         # ​recurring_application_charge​ = ShopifyAPI​::​RecurringApplicationCharge​.​find​(​request​.params[​'charge_id'​])
         # ​recurring_application_charge​.​status​ == ​"accepted"​ ? recurring_application_charge​.activate : ​redirect(​root_path​)
         # ​redirect_to​(​root_path​)
-
+        debugger
+        
         recurring_application_charge = ShopifyAPI::RecurringApplicationCharge.find(request.params['charge_id'])
         recurring_application_charge.status == "accepted" ? recurring_application_charge.activate : redirect(root_path)
         redirect(root_path)
