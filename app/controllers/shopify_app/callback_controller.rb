@@ -24,7 +24,8 @@ module ShopifyApp
       sess = ShopifyAPI::Session.new(domain: shop_name, token: token, api_version: "2020-10")
       ShopifyAPI​::​Base​.​activate_session​(sess)
       ShopifyAPI::Base.api_version = ShopifyApp.configuration.api_version
-      if​ ​ShopifyAPI​::​RecurringApplicationCharge​.current
+      result = ShopifyAPI​::​RecurringApplicationCharge​.current
+      if result
         redirect_to(return_address)
       else
         create_recurring_application_charge
