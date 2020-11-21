@@ -21,10 +21,10 @@ module ShopifyApp
     end
     
     def ​check_for_recurring_charge
-      sess = ShopifyAPI::Session.new(domain: shop_name, token: token, api_version: "2020-10")
-      ShopifyAPI​::​Base​.​activate_session​(sess)
+      shopify_session = ShopifyAPI::Session.new(domain: shop_name, token: token, api_version: "2020-10")
+      ShopifyAPI::Base.activate_session(shopify_session)
       ShopifyAPI::Base.api_version = ShopifyApp.configuration.api_version
-      result = ShopifyAPI​::​RecurringApplicationCharge​.current
+      result = ShopifyAPI::RecurringApplicationCharge.current
       if result
         redirect_to(return_address)
       else
@@ -33,19 +33,20 @@ module ShopifyApp
     end
 
     def create_recurring_application_charge
-      debugger
-      # unless ShopifyAPI​::​RecurringApplicationCharge​.current
-      #   recurring_charge = ShopifyAPI::RecurringApplicationCharge.new(
-      #     name: "Staff Picks App",
-      #     price: 2.99,
-      #     test: true,
-      #     trial_days: 7,
-      #     return_url: "https://ec513accccc9.ngrok.io/activatecharge"
-      #   )
-      #   if recurring_charge.save
-      #     redirect_to(recurring_charge.confirmation_url)
-      #   end
-      # end
+      unless ShopifyAPI::RecurringApplicationCharge.current
+        recurring_application_charge = ShopifyAPI::RecurringApplicationCharge.new(
+          name: "Staff Picks App",
+          price: 1.99,
+          return_url: "https://ec513accccc9.ngrok.io/activatecharge",
+          test: true,
+          trial_days: 7)
+        recurring_application_charge.save
+        redirect_to(recurring_application_charge.confirmation_url)
+        # if recurring_application_charge.save
+        #   redirect_to recurring_application_charge.confirmation_url
+        #   # redirect_to(recurring_application_charge.confirmation_url)
+        # end
+      end
     end
 
     
