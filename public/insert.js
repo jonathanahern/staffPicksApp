@@ -1,11 +1,10 @@
 var url = window.location.href;
 var shop = Shopify.shop;
-var handle = url.split("/").pop();
 var pickedProducts = getPicks();
 var prodID = null;
 var pickAlreadyFound = false;
 var collectionEles = [];
-var recheckTime = 5;
+var recheckTime = 300;
 
 if (url.includes('/products/')) {
   prodID = meta.product.id;

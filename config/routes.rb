@@ -3,10 +3,10 @@ Rails.application.routes.draw do
     namespace :api, defaults: {format: :json} do
       resources :employees
       resources :products
-      resources :front_end
-      resources :settings
+      resources :front_end, only: [:index, :show]
+      resources :settings, only: [:show, :create, :update]
       resources :emails, only: [:create]
-      resources :pages, only: :index do
+      resources :pages, only: [:index] do
         member do
           get 'getStaff'
         end
