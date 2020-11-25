@@ -4,7 +4,7 @@ var pickedProducts = getPicks();
 var prodID = null;
 var pickAlreadyFound = false;
 var collectionEles = [];
-var recheckTime = 300;
+var recheckTime = 5;
 
 if (url.includes('/products/')) {
   prodID = meta.product.id;
@@ -186,8 +186,8 @@ function setupPageForCollections() {
     ".staff-pick-alert p {" +
         "position: absolute;" +
         "transform: translate(50%, -50%);" +
-        "top: 50%;" +
-        "right: 49%;" +
+        "top: 45%;" +
+        "right: 50%;" +
         "color: white;" +
         "text-align: center;" +
         "font-size: .70em;" +
