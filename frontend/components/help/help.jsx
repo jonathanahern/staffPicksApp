@@ -3,13 +3,10 @@ import {
   AppProvider,
   Banner,
   Page,
-  Stack,
-  RadioButton,
   Button,
   Card,
   TextField,
   TextStyle,
-  List
 } from "@shopify/polaris";
 
 class Help extends Component {
@@ -96,7 +93,9 @@ class Help extends Component {
             <TextStyle variation="strong">How can I reset a staff member's individual page?</TextStyle>
             <div className="tabbed"><TextStyle>Pages are created when a staff member is added. The only way to reset the page to default is to recreate the staff member from scratch.</TextStyle></div>
             <TextStyle variation="strong">My new picks and staff aren't showing up. Where are they?</TextStyle>
-            <div className="tabbed"><TextStyle>Shops only check for new picks and staff every 5 minutes. If it still doesn't show after 5 minutes, please contact me!</TextStyle></div>        
+            <div className="tabbed"><TextStyle>Shops only check for new picks every 5 minutes. If it still doesn't show after 5 minutes, please contact me!</TextStyle></div>
+            <TextStyle variation="strong">How many picks and staff can I add?</TextStyle>
+            <div className="tabbed"><TextStyle>There is a current limit of 100 picks and 24 staff.</TextStyle></div>         
           </Card>
           <Card sectioned title="Contact">
             <TextStyle variation="subdued">If you have any trouble whatsoever, send me a message. I'd be happy to help.</TextStyle>

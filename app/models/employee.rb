@@ -17,6 +17,7 @@ class Employee < ApplicationRecord
     validates :name, :job_title, length: { maximum: 24 }
     validates :description, length: { maximum: 500 }
     validates :name, uniqueness: { case_sensitive: false, scope: :shop_id, message: "already in use" }
+    validate :amount_limits
 
     belongs_to :shop,
         class_name: :Shop,
@@ -28,5 +29,15 @@ class Employee < ApplicationRecord
         primary_key: :id,
         foreign_key: :employee_id,
         dependent: :destroy
+
+    private
+
+    def amount_limits
+        shop_id = self.shop_id
+        num = Shop.find(shop_id).products.size
+        if num >= 24
+            errors.add(:id, 'Error - Max staff limit reached')
+        end
+    end
   
 end
