@@ -21,10 +21,9 @@ import {
 } from "@shopify/app-bridge-react";
 
 
-class ProductNew extends Component {
+class ProductEdit extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       original_id: this.props.product.shopify_product_id,
       shopify_title: this.props.product.shopify_title,
@@ -194,7 +193,6 @@ class ProductNew extends Component {
           selectorVal = val;
         }
       });
-
     }
     return (
       <>
@@ -308,4 +306,4 @@ class ProductNew extends Component {
     );
   }
 }
-export default ProductNew;
+export default ProductEdit;

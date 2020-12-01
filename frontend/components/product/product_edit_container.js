@@ -11,6 +11,7 @@ import ProductEdit from './product_edit';
 
 const mapStateToProps = (state, ownProps) => ({
   data: document.getElementById("shopify-app-init"),
+  tester: ownProps.match.params,
   product: state.entities.products[ownProps.match.params.productId],
   employees: Object.values(state.entities.employees),
   products: Object.values(state.entities.products),

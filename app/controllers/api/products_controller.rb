@@ -1,7 +1,7 @@
 class Api::ProductsController < ShopifyApp::AuthenticatedController
 
   def index
-    @products = Shop.find(session[:shop_id]).products.order(:shopify_title)
+    @products = Shop.find(session[:shop_id]).products
     render :index
   end
 

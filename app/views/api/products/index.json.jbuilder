@@ -1,5 +1,5 @@
 @products.each do |product|
-  json.set! product.shopify_title do
+  json.set! product.id do
     json.partial! 'product', product: product
   end
 end

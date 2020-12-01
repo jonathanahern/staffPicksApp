@@ -124,6 +124,7 @@ class ProductIndex extends React.Component {
 
   render() {
     const { products } = this.props;
+    products.sort((a, b) => (a.shopify_title > b.shopify_title) ? 1 : -1)
     const indexi = [ [0,15], [15,30], [30,45], [45,60], [60,75], [75,90], [90,105] ]
     const productsPortion = products.slice(indexi[this.state.currentPage-1][0],indexi[this.state.currentPage-1][1]);
     const { limitError, limitReach } = this.state;

@@ -127,7 +127,6 @@ function loadInStickers(){
               collectionEles.push(ele);
               insertPickPic(ele);
               if (!pickAlreadyFound){
-                  pickAlreadyFound = true;
                   setupPageForCollections();
               }
           }
@@ -176,6 +175,7 @@ function loadStickerImage(){
 
 function setupPageForCollections() {
   var style = document.createElement("style");
+  pickAlreadyFound = true;
   style.innerHTML =
     ".starburst-container {" +
         "position: absolute;" +
@@ -287,6 +287,9 @@ function checkForProductChanges(origProducts, data){
             if (idsToAdd.includes(idCheck)) {
               collectionEles.push(ele);
               insertPickPic(ele);
+              if (!pickAlreadyFound){
+                  setupPageForCollections();
+              }
             }
           }
       }
