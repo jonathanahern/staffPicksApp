@@ -30,7 +30,7 @@ module ShopifyApp
         recurring_application_charge = ShopifyAPI::RecurringApplicationCharge.new(
           name: "Staff Picks App",
           price: 1.99,
-          return_url: "https://ec513accccc9.ngrok.io/activatecharge",
+          return_url: "https://staff-picks-app.herokuapp.com/activatecharge",
           test: true,
           trial_days: 7)
         if recurring_application_charge.save
@@ -43,8 +43,8 @@ module ShopifyApp
       if jwt_request?
         head(:ok)
       else
-        check_for_charge
-        # redirect_to(return_address)
+        # check_for_charge
+        redirect_to(return_address)
       end
     end
 
