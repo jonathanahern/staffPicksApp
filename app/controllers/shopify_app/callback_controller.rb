@@ -153,7 +153,7 @@ module ShopifyApp
         puts session[:shop_id]
         session[:user_id] = nil if user_session && user_session.domain != shop_name
         puts session[:user_id]
-        puts session[]
+        puts session
       end
       session[:shopify_domain] = shop_name
       session[:user_session] = auth_hash&.extra&.session
