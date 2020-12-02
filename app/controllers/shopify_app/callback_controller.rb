@@ -6,7 +6,6 @@ module ShopifyApp
     include ShopifyApp::LoginProtection
 
     def callback
-      console.log("Made it tops")
       return respond_with_error if invalid_request?
 
       store_access_token_and_build_session
@@ -41,12 +40,11 @@ module ShopifyApp
     end
 
     def respond_successfully
-      console.log("Made it here")
       if jwt_request?
         head(:ok)
       else
-        # check_for_charge
-        redirect_to(return_address)
+        check_for_charge
+        # redirect_to(return_address)
       end
     end
 
