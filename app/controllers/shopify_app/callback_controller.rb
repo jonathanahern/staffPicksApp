@@ -6,36 +6,25 @@ module ShopifyApp
     include ShopifyApp::LoginProtection
 
     def callback
-      puts "Hello, logs2 !"
+      puts "Hello, logs!"
       return respond_with_error if invalid_request?
-      puts "Hello, logs3 !"
 
       store_access_token_and_build_session
-      puts "Hello, logs4 !"
 
       if start_user_token_flow?
         return respond_with_user_token_flow
       end
-      puts "Hello, logs5 !"
 
       perform_post_authenticate_jobs
-      puts "Hello, logs6 !"
 
       respond_successfully
-      puts "Hello, logs7 !"
-
     end
 
     def check_for_charge
       shopify_session = ShopifyAPI::Session.new(domain: shop_name, token: token, api_version: "2020-10")
       ShopifyAPI::Base.activate_session(shopify_session)
-      puts "Hello, session!"
       ShopifyAPI::Base.api_version = ShopifyApp.configuration.api_version
       result = ShopifyAPI::RecurringApplicationCharge.current
-      puts "Hello, result"
-      puts "Hello, #{session}"
-      puts "Hello, #{result}"
-
       if result
         redirect_to(return_address)
       else
@@ -55,7 +44,7 @@ module ShopifyApp
       if jwt_request?
         head(:ok)
       else
-        puts "Hello, response!"
+        puts "Hello, resp!"
         check_for_charge
         # redirect_to(return_address)
       end
@@ -143,42 +132,31 @@ module ShopifyApp
     end
 
     def reset_session_options
-      puts "Test1"
       request.session_options[:renew] = true
-      puts "Test2"
       session.delete(:_csrf_token)
-      puts "Test13"
     end
 
     def set_shopify_session
-      puts "Test4"
       session_store = ShopifyAPI::Session.new(
         domain: shop_name,
         token: token,
         api_version: ShopifyApp.configuration.api_version
       )
-      puts "Test5"
 
       session[:shopify_user] = associated_user
-      puts "Test6"
-
       if session[:shopify_user].present?
-      puts "Test7"
-
         session[:shop_id] = nil if shop_session && shop_session.domain != shop_name
         session[:user_id] = ShopifyApp::SessionRepository.store_user_session(session_store, associated_user)
       else
-      puts "Test8"
-
+        puts "The error occurs here"
         session[:shop_id] = ShopifyApp::SessionRepository.store_shop_session(session_store)
+        puts session[:shop_id]
         session[:user_id] = nil if user_session && user_session.domain != shop_name
+        puts session[:user_id]
+        puts session[]
       end
-      puts "Test9"
-
       session[:shopify_domain] = shop_name
       session[:user_session] = auth_hash&.extra&.session
-      puts "Test0"
-
     end
 
     def install_webhooks
