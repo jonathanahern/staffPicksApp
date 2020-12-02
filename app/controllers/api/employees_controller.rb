@@ -22,22 +22,19 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
   end
 
   def create
-    puts "Test6"
     shop_id = session[:shop_id]
     @employee = Employee.new(employee_params)
-    puts "Test7"
     @employee.shop_id = shop_id
     if @employee.save
-puts "Test8"
-      if createPage(@employee)puts "Test9"
+
+      if createPage(@employee)
         render json: @employee, status: 200
       else
-        puts "Test0"
         render json: {error: "Page didn't save"}, status: 422
       end
 
     else
-puts "Testa"
+
       render json: {error: @employee.errors.full_messages, status: 422 }
 
     end
@@ -77,7 +74,6 @@ puts "Testa"
     end
 
     def createPage(employee)
-      puts "Test4"
       description = employee.description.gsub("\n", "<br />");
       @page = ShopifyAPI::Page.new
       @page.title = employee.name
@@ -153,14 +149,10 @@ puts "Testa"
                 }\n
             };\n
         </style>"
-        puts "Test5"
       if @page.save
-        puts "Test1"
         employee.update(:shopify_page_id => @page.id, :page_url => @page.handle);
-        puts "Test2"
         return true
       else
-        puts "Test3"
         return false
       end
     end
