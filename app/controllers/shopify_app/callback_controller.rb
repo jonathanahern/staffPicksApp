@@ -23,8 +23,13 @@ module ShopifyApp
     def check_for_charge
       shopify_session = ShopifyAPI::Session.new(domain: shop_name, token: token, api_version: "2020-10")
       ShopifyAPI::Base.activate_session(shopify_session)
+      puts "Hello, session!"
       ShopifyAPI::Base.api_version = ShopifyApp.configuration.api_version
       result = ShopifyAPI::RecurringApplicationCharge.current
+      puts "Hello, result"
+      puts "Hello, #{session}"
+      puts "Hello, #{result}"
+
       if result
         redirect_to(return_address)
       else
@@ -44,6 +49,7 @@ module ShopifyApp
       if jwt_request?
         head(:ok)
       else
+        puts "Hello, response!"
         check_for_charge
         # redirect_to(return_address)
       end
