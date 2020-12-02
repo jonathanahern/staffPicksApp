@@ -94,7 +94,7 @@ function createProducts(container, data) {
         container.appendChild(containerPick);
 
         let containerImg = document.createElement("div");
-        containerImg.className += "img-container";
+        containerImg.className += "img-container-staff";
         containerPick.appendChild(containerImg);
 
         let img = document.createElement("img");

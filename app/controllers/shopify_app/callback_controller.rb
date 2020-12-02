@@ -6,7 +6,6 @@ module ShopifyApp
     include ShopifyApp::LoginProtection
 
     def callback
-      puts "Hello, logs!"
       return respond_with_error if invalid_request?
 
       store_access_token_and_build_session
@@ -29,10 +28,9 @@ module ShopifyApp
         redirect_to(return_address)
       else
         recurring_application_charge = ShopifyAPI::RecurringApplicationCharge.new(
-          name: "Staff Picks App",
-          price: 1.99,
+          name: "Staff Picks",
+          price: 2.99,
           return_url: "https://staff-picks-app.herokuapp.com/activatecharge",
-          test: true,
           trial_days: 7)
         if recurring_application_charge.save
           redirect_to(recurring_application_charge.confirmation_url)
@@ -44,7 +42,6 @@ module ShopifyApp
       if jwt_request?
         head(:ok)
       else
-        puts "Hello, resp!"
         check_for_charge
         # redirect_to(return_address)
       end
@@ -148,12 +145,8 @@ module ShopifyApp
         session[:shop_id] = nil if shop_session && shop_session.domain != shop_name
         session[:user_id] = ShopifyApp::SessionRepository.store_user_session(session_store, associated_user)
       else
-        puts "The error occurs here"
         session[:shop_id] = ShopifyApp::SessionRepository.store_shop_session(session_store)
-        puts session[:shop_id]
         session[:user_id] = nil if user_session && user_session.domain != shop_name
-        puts session[:user_id]
-        puts session
       end
       session[:shopify_domain] = shop_name
       session[:user_session] = auth_hash&.extra&.session

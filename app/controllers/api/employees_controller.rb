@@ -22,19 +22,22 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
   end
 
   def create
+    puts "Test6"
     shop_id = session[:shop_id]
     @employee = Employee.new(employee_params)
+    puts "Test7"
     @employee.shop_id = shop_id
     if @employee.save
-
-      if createPage(@employee)
+puts "Test8"
+      if createPage(@employee)puts "Test9"
         render json: @employee, status: 200
       else
+        puts "Test0"
         render json: {error: "Page didn't save"}, status: 422
       end
 
     else
-
+puts "Testa"
       render json: {error: @employee.errors.full_messages, status: 422 }
 
     end
@@ -74,6 +77,7 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
     end
 
     def createPage(employee)
+      puts "Test4"
       description = employee.description.gsub("\n", "<br />");
       @page = ShopifyAPI::Page.new
       @page.title = employee.name
@@ -119,12 +123,15 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
                 clear: both;\n
                 display: table;\n
             }\n
-            .img-container {\n
+            .img-container-staff {\n
                 float: left;\n
                 width: 120px;\n
                 align-items: center;\n
-                margin-top: 4px;\n
-                margin-right: 8px;\n
+                margin-top: 3px;\n
+                margin-bottom: -3px;\n
+            }\n
+            .pick-container:nth-child(1), .pick-container:nth-child(2) {\n
+                padding-right: 20px;\n
             }\n
             .pick-container h4  {\n
                 margin: 0;\n
@@ -135,6 +142,9 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
                     flex-direction: column;\n
                     align-items: center;\n
                 }\n
+                .img-container-staff {\n
+                    margin-bottom: -8px;\n
+                }\n
                 .staff-picks-products {\n
                   flex-direction: column;\n
                 }\n
@@ -143,12 +153,14 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
                 }\n
             };\n
         </style>"
+        puts "Test5"
       if @page.save
+        puts "Test1"
         employee.update(:shopify_page_id => @page.id, :page_url => @page.handle);
-        # ShopifyAPI::Collection.find(165897109571)
-        # ShopifyAPI::Collection.find(165012111427)
+        puts "Test2"
         return true
       else
+        puts "Test3"
         return false
       end
     end
