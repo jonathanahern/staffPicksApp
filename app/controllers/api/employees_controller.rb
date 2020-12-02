@@ -100,7 +100,6 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
             #my-picks-header {\n
                 text-align: center;\n
             }\n
-
             .pick-container {\n
                 height: 320px;\n
                 width: 33%;\n
@@ -114,17 +113,11 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
                 flex-wrap: wrap;\n
                 align-items: center;\n
             }\n
-            .clearfix:: after {\n
-                content: "";\n
-                clear: both;\n
-                display: table;\n
-            }\n
             .img-container-staff {\n
-                float: left;\n
                 width: 120px;\n
+                max-height: 300px;\n
                 align-items: center;\n
-                margin-top: 3px;\n
-                margin-bottom: -3px;\n
+                margin-bottom: 6px;\n
             }\n
             .pick-container:nth-child(1), .pick-container:nth-child(2) {\n
                 padding-right: 20px;\n
@@ -137,9 +130,6 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
                 #profile-container {\n
                     flex-direction: column;\n
                     align-items: center;\n
-                }\n
-                .img-container-staff {\n
-                    margin-bottom: -8px;\n
                 }\n
                 .staff-picks-products {\n
                   flex-direction: column;\n

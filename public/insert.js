@@ -89,7 +89,7 @@ function createProducts(container, data) {
 
         let containerPick = document.createElement("a");
         containerPick.href = url.split("/pages/")[0] + "/products/" + pick.shopify_handle;
-        containerPick.className += "pick-container clearfix";
+        containerPick.className += "pick-container";
         containerPick.style.marginBottom = "12px";
         container.appendChild(containerPick);
 
