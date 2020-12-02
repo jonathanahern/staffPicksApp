@@ -6,18 +6,24 @@ module ShopifyApp
     include ShopifyApp::LoginProtection
 
     def callback
-      puts "Hello, logs!"
+      puts "Hello, logs2 !"
       return respond_with_error if invalid_request?
+      puts "Hello, logs3 !"
 
       store_access_token_and_build_session
+      puts "Hello, logs4 !"
 
       if start_user_token_flow?
         return respond_with_user_token_flow
       end
+      puts "Hello, logs5 !"
 
       perform_post_authenticate_jobs
+      puts "Hello, logs6 !"
 
       respond_successfully
+      puts "Hello, logs7 !"
+
     end
 
     def check_for_charge
