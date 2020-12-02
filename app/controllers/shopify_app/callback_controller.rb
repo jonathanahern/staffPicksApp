@@ -6,7 +6,7 @@ module ShopifyApp
     include ShopifyApp::LoginProtection
 
     def callback
-      
+      puts "Hello, logs!"
       return respond_with_error if invalid_request?
 
       store_access_token_and_build_session
