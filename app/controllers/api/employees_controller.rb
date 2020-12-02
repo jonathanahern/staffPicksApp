@@ -105,7 +105,8 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
                 width: 33%;\n
                 border-bottom: none !important;\n
                 overflow: hidden; \n
-                padding-right: 12px; \n
+                padding-right: 30px; \n
+                padding-left: 30px; \n
             }\n
             .staff-picks-products {\n
                 width: 100%;\n
@@ -118,9 +119,6 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
                 max-height: 300px;\n
                 align-items: center;\n
                 margin-bottom: 6px;\n
-            }\n
-            .pick-container:nth-child(1), .pick-container:nth-child(2) {\n
-                padding-right: 40px;\n
             }\n
             .pick-container h4  {\n
                 margin: 0;\n
