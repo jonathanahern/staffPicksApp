@@ -43,8 +43,8 @@ module ShopifyApp
       if jwt_request?
         head(:ok)
       else
-        # check_for_charge
-        redirect_to(return_address)
+        check_for_charge
+        # redirect_to(return_address)
       end
     end
 
