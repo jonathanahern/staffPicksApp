@@ -120,7 +120,7 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
                 margin-bottom: 6px;\n
             }\n
             .pick-container:nth-child(1), .pick-container:nth-child(2) {\n
-                padding-right: 20px;\n
+                padding-right: 40px;\n
             }\n
             .pick-container h4  {\n
                 margin: 0;\n
