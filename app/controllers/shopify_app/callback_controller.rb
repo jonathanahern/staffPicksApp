@@ -40,6 +40,7 @@ module ShopifyApp
     end
 
     def respond_successfully
+      console.log("Made it here")
       if jwt_request?
         head(:ok)
       else
