@@ -6,8 +6,7 @@ module ShopifyApp
     include ShopifyApp::LoginProtection
 
     def callback
-      puts "Made it thererere"
-
+      
       return respond_with_error if invalid_request?
 
       store_access_token_and_build_session
@@ -42,7 +41,6 @@ module ShopifyApp
     end
 
     def respond_successfully
-      puts "Made it herererere"
       if jwt_request?
         head(:ok)
       else
