@@ -46,15 +46,17 @@ private
           }\n
       .staff-member-container {\n
         width: 33%;\n
-        padding-right: 32px;\n
+        padding-right: 28px;\n
+        padding-left: 28px;\n
         height: 380px;\n
         overflow: hidden;\n
         border-bottom: none !important;\n
       }\n
       .staff-img-container {\n
-        width: 42%;\n
+        width: 40%;\n
         padding-right: 6px;\n
         float: left;\n
+        margin-bottom: -12px;\n
       } \n
       #staff-profiles-ele {\n
         display: flex;\n
@@ -72,7 +74,7 @@ private
       .section-header {\n
         margin-bottom: 0px;\n
       }\n
-      @media screen and (max-width: 900px) {\n
+      @media screen and (max-width: 960px) {\n
         #staff-profiles-ele {\n
           flex-direction: column;\n
           align-items: center;\n

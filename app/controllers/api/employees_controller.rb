@@ -101,7 +101,7 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
                 text-align: center;\n
             }\n
             .pick-container {\n
-                height: 320px;\n
+                height: 460px;\n
                 width: 33%;\n
                 border-bottom: none !important;\n
                 overflow: hidden; \n
@@ -115,8 +115,8 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
                 align-items: center;\n
             }\n
             .img-container-staff {\n
-                width: 120px;\n
-                max-height: 300px;\n
+                width: 100%;\n
+                max-height: 200px;\n
                 align-items: center;\n
                 margin-bottom: 6px;\n
             }\n
