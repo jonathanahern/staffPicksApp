@@ -37,13 +37,13 @@ private
       @page = ShopifyAPI::Page.new
       @page.title = title
       @page.body_html =
-          "<p id='staff-subtitle'>#{subtitle}</p>\n
-          <div id='staff-profiles-ele'></div>\n
-          <style>\n
-          #staff-subtitle {\n
-            text-align:center;\n
-            margin-bottom: 32px;\n
-          }\n
+      "<p id='staff-subtitle'>#{subtitle}</p>\n
+      <div id='staff-profiles-ele'></div>\n
+      <style>\n
+      #staff-subtitle {\n
+        text-align:center;\n
+        margin-bottom: 32px;\n
+      }\n
       .staff-member-container {\n
         width: 33%;\n
         height: 380px;\n
@@ -61,9 +61,8 @@ private
         padding-left: 28px;\n
       }\n
       .staff-img-container {\n
-        height: 150px;\n
-        max-width: 120px;\n
         padding-right: 6px;\n
+        padding-top: 0px;\n
         margin-bottom: -10px;\n
         float: left;\n
       } \n
@@ -106,12 +105,13 @@ private
           margin-top: 24px;\n
         }\n
         .staff-img-container {\n
-          width: 45%;\n
+          height: 150px;\n
         }\n
         .description-staff-pick {\n
           line-height: 1.4;\n
         }\n
         </style>"
+
       if @page.save
         return true
       else
