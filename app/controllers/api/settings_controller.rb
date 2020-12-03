@@ -85,7 +85,14 @@ private
       }\n
 
       .description-staff-pick{\n
-        line-height: 1.4;\n
+        line-height: 1.5;\n
+      }\n
+      .staff-img-container img{\n
+          max-height: 150px;\n
+          max-width: 120px;\n
+      }\n
+      .staff-member-container .job-title {\n
+        margin-bottom: 6px;\n
       }\n
 
       @media screen and (max-width: 960px) {\n
@@ -98,10 +105,6 @@ private
           height: inherit;\n
           margin-top: 24px;\n
         }\n
-        .staff-img-container img{\n
-          max-height: 150px;\n
-          max-width: 120px;\n
-         }\n
         .staff-img-container {\n
           width: 45%;\n
         }\n
