@@ -4,7 +4,7 @@ var pickedProducts = getPicks();
 var prodID = null;
 var pickAlreadyFound = false;
 var collectionEles = [];
-var recheckTime = 5;
+var recheckTime = 300;
 
 if (url.includes('/products/')) {
   prodID = meta.product.id;
@@ -455,7 +455,6 @@ function insertData(data){
 
     let pDescription = document.createElement("p");
     pDescription.innerHTML = data["pick"]["review"].replace(/\n/g, "<br />");
-    // pDescription.style.fontStyle = "italic";
     pDescription.style.margin = "0px";
     pDescription.style.marginBottom = "12px";
     wordsDiv.appendChild(pDescription);

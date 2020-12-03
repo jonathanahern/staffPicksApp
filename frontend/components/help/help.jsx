@@ -87,9 +87,9 @@ class Help extends Component {
         <Page title="Help">
           <Card sectioned title="FAQs">
             <TextStyle variation="strong">The picks don't look right on my page. How can I fix it?</TextStyle>
-            <div className="tabbed"><TextStyle>You can change the position of the pick in the Setup tab. However since not all themes are formatted the same, you may need to edit the SCSS code to your liking. If you need any help, contact me and I'd love to help.</TextStyle></div>
-            <TextStyle variation="strong">Why is there a new Staff Picks collection?</TextStyle>
-            <div className="tabbed"><TextStyle>When the app is downloaded, it should automatically create a new collection for your staff picks. This helps create recommendations on product pages for your staff picks. When new picks are created, they are automatically tagged to be placed in this collection.</TextStyle></div>
+            <div className="tabbed"><TextStyle>You can change the position of the pick in the Setup tab and then edit your theme's product code as directed in the Setup tab. However since not all themes are formatted the same, you may need to edit the SCSS code to your liking. If you need any help, contact me and I'd love to help.</TextStyle></div>
+            <TextStyle variation="strong">Why is there a Staff Picks collection?</TextStyle>
+            <div className="tabbed"><TextStyle>When the app is downloaded, it should automatically create a new collection for your staff picks. This helps create recommendations on product pages for your staff picks and you can also use it to create your own custom collection. When new picks are created, they are automatically tagged to be placed in this collection.</TextStyle></div>
             <TextStyle variation="strong">How can I reset a staff member's individual page?</TextStyle>
             <div className="tabbed"><TextStyle>Pages are created when a staff member is added. The only way to reset the page to default is to recreate the staff member from scratch.</TextStyle></div>
             <TextStyle variation="strong">My new picks and staff aren't showing up. Where are they?</TextStyle>
