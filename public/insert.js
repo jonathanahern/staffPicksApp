@@ -455,7 +455,7 @@ function insertData(data){
 
     let pDescription = document.createElement("p");
     pDescription.innerHTML = data["pick"]["review"].replace(/\n/g, "<br />");
-    pDescription.style.fontStyle = "italic";
+    // pDescription.style.fontStyle = "italic";
     pDescription.style.margin = "0px";
     pDescription.style.marginBottom = "12px";
     wordsDiv.appendChild(pDescription);
