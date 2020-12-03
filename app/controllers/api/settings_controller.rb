@@ -46,11 +46,19 @@ private
           }\n
       .staff-member-container {\n
         width: 33%;\n
-        padding-right: 28px;\n
-        padding-left: 28px;\n
         height: 380px;\n
         overflow: hidden;\n
         border-bottom: none !important;\n
+      }\n
+      .staff-member-container:nth-child(1) {\n
+        padding-right: 28px;\n
+      }\n
+      .staff-member-container:nth-child(2) {\n
+        padding-right: 28px;\n
+        padding-left: 28px;\n
+      }\n
+      .staff-member-container:nth-child(3) {\n
+        padding-left: 28px;\n
       }\n
       .staff-img-container {\n
         width: 40%;\n
