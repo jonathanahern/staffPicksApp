@@ -50,21 +50,22 @@ private
         overflow: hidden;\n
         border-bottom: none !important;\n
       }\n
-      .staff-member-container:nth-child(1) {\n
+      .staff-member-container:nth-child(3n+1) {\n
         padding-right: 28px;\n
       }\n
-      .staff-member-container:nth-child(2) {\n
-        padding-right: 28px;\n
-        padding-left: 28px;\n
+      .staff-member-container:nth-child(3n+2) {\n
+        padding-right: 14px;\n
+        padding-left: 14px;\n
       }\n
-      .staff-member-container:nth-child(3) {\n
+      .staff-member-container:nth-child(3n+0) {\n
         padding-left: 28px;\n
       }\n
       .staff-img-container {\n
-        width: 40%;\n
+        height: 150px;\n
+        max-width: 120px;\n
         padding-right: 6px;\n
+        margin-bottom: -10px;\n
         float: left;\n
-        margin-bottom: -12px;\n
       } \n
       #staff-profiles-ele {\n
         display: flex;\n
@@ -82,6 +83,11 @@ private
       .section-header {\n
         margin-bottom: 0px;\n
       }\n
+
+      .description-staff-pick{\n
+        line-height: 1.4;\n
+      }\n
+
       @media screen and (max-width: 960px) {\n
         #staff-profiles-ele {\n
           flex-direction: column;\n
@@ -92,8 +98,15 @@ private
           height: inherit;\n
           margin-top: 24px;\n
         }\n
+        .staff-img-container img{\n
+          max-height: 150px;\n
+          max-width: 120px;\n
+         }\n
         .staff-img-container {\n
           width: 45%;\n
+        }\n
+        .description-staff-pick {\n
+          line-height: 1.4;\n
         }\n
         </style>"
       if @page.save
