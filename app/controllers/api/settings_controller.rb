@@ -100,15 +100,19 @@ private
           align-items: center;\n
         }\n
         .staff-member-container {\n
-          width: 70%;\n
+          width: 360;\n
           height: inherit;\n
           margin-top: 24px;\n
         }\n
-        .staff-img-container {\n
-          height: 150px;\n
+        .staff-member-container:nth-child(3n+1) {\n
+          padding-right: 0px;\n
         }\n
-        .description-staff-pick {\n
-          line-height: 1.4;\n
+        .staff-member-container:nth-child(3n+2) {\n
+          padding-right: 0px;\n
+          padding-left: 0px;\n
+        }\n
+        .staff-member-container:nth-child(3n+0) {\n
+          padding-left: 0px;\n
         }\n
         </style>"
 
