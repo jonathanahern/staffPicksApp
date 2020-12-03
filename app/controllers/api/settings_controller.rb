@@ -43,6 +43,7 @@ private
       #staff-subtitle {\n
         text-align:center;\n
         margin-bottom: 32px;\n
+        font-style: italic;\n
       }\n
       .staff-member-container {\n
         width: 33%;\n
