@@ -31,7 +31,6 @@ module ShopifyApp
           name: "Staff Picks",
           price: 2.99,
           return_url: "https://staff-picks-app.herokuapp.com/activatecharge",
-          test: true,
           trial_days: 7)
         if recurring_application_charge.save
           redirect_to(recurring_application_charge.confirmation_url)

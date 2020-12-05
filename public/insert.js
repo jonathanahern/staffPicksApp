@@ -4,7 +4,7 @@ var pickedProducts = getPicks();
 var prodID = null;
 var pickAlreadyFound = false;
 var collectionEles = [];
-var recheckTime = 300;
+var recheckTime = 180;
 
 if (url.includes('/products/')) {
   prodID = meta.product.id;

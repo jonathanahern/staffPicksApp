@@ -107,6 +107,7 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
                 overflow: hidden; \n
                 padding-right: 30px; \n
                 padding-left: 30px; \n
+                margin-top: 10px;\n
             }\n
             .staff-picks-products {\n
                 width: 100%;\n
