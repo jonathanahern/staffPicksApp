@@ -101,7 +101,7 @@ private
           align-items: center;\n
         }\n
         .staff-member-container {\n
-          width: 360;\n
+          width: 320px;\n
           height: inherit;\n
           margin-top: 24px;\n
         }\n
