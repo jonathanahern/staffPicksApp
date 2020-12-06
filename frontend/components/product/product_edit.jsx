@@ -106,6 +106,7 @@ class ProductEdit extends Component {
     this.setState({ product_error: "" });
     let idArr = selection.selection[0].id.split("Product/");
     let id = parseInt(idArr[idArr.length - 1]);
+    console.log(selection.selection[0]);
     const imageUrl = selection.selection[0].images[0].originalSrc;
     const title = selection.selection[0].title;
     const handle = selection.selection[0].handle;
