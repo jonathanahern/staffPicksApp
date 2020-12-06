@@ -111,7 +111,7 @@ class ProductIndex extends React.Component {
         >
         <Link to={`/products/${id}/edit`}>
           <div id="div-container">
-            <img src={shopify_image_url} style={{ width: "60px" }} />
+            <img src={shopify_image_url} className="list-image" />
             <div id="description-list">
               <TextStyle variation="strong">{title}</TextStyle>
               <TextStyle> {review} </TextStyle>

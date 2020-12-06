@@ -99,7 +99,7 @@ class EmployeeIndex extends React.Component {
         >
         <Link to={`/employees/${id}/edit`}>
           <div id="div-container">
-            <img src={profile_url} style={{ width: "60px" }} />
+            <img src={profile_url} className="list-image" />
             <div id="description-list">
               <TextStyle variation="strong">
                 {" "}

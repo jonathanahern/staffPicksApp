@@ -107,7 +107,7 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
                 overflow: hidden; \n
                 padding-right: 30px; \n
                 padding-left: 30px; \n
-                margin-top: 10px;\n
+                margin-top: 16px;\n
             }\n
             .staff-picks-products {\n
                 width: 100%;\n
@@ -120,6 +120,8 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
                 max-height: 200px;\n
                 align-items: center;\n
                 margin-bottom: 6px;\n
+                display: flex;\n
+                justify-content: center;\n
             }\n
             .pick-container h4  {\n
                 margin: 0;\n
