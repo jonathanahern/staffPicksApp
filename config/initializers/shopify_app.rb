@@ -12,9 +12,9 @@ ShopifyApp.configure do |config|
   config.scripttags = [
     {event:'onload', src: 'https://staff-picks-app.herokuapp.com/insert.js'}
   ]
-  config.webhooks = [
-    {topic: 'products/update', address: 'https://staff-picks-app.herokuapp.com/webhooks/products_update', fields: ['id','image', 'title'], format: 'json'},
-  ]
+  # config.webhooks = [
+  #   {topic: 'products/update', address: 'https://staff-picks-app.herokuapp.com/webhooks/products_update', fields: ['id','image', 'title'], format: 'json'},
+  # ]
 end
 
 # ShopifyApp::Utils.fetch_known_api_versions                        # Uncomment to fetch known api versions from shopify servers on boot

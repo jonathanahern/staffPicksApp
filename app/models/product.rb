@@ -40,16 +40,16 @@ class Product < ApplicationRecord
         # {shop: shopDomain}
     end
 
-    def self.webhookChange(prodID, img, title)
-        prod = Product.find_by_shopify_product_id(prodID);
-        if prod != nil
-            if img != prod.shopify_image_url
-                prod.update(:shopify_image_url => img);
-            elsif title != prod.shopify_title
-                prod.update(:shopify_title => title);
-            end
-        end
-    end
+    # def self.webhookChange(prodID, img, title)
+    #     prod = Product.find_by_shopify_product_id(prodID);
+    #     if prod != nil
+    #         if img != prod.shopify_image_url
+    #             prod.update(:shopify_image_url => img);
+    #         elsif title != prod.shopify_title
+    #             prod.update(:shopify_title => title);
+    #         end
+    #     end
+    # end
 
     private
 
