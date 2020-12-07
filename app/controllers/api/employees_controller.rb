@@ -22,6 +22,8 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
   end
 
   def create
+    puts params
+    puts session[:shop_id]
     shop_id = session[:shop_id]
     @employee = Employee.new(employee_params)
     @employee.shop_id = shop_id
