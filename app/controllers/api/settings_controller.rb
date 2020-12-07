@@ -47,7 +47,7 @@ private
       }\n
       .staff-member-container {\n
         width: 33%;\n
-        height: 380px;\n
+        height: 350px;\n
         overflow: hidden;\n
         border-bottom: none !important;\n
       }\n
@@ -85,7 +85,7 @@ private
       }\n
 
       .description-staff-pick{\n
-        line-height: 1.5;\n
+        line-height: 1.4;\n
       }\n
       .staff-img-container img{\n
           max-height: 150px;\n

@@ -92,6 +92,9 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
             #profile-container p {\n
                 max-width: 500px;\n
             }\n
+            .pick-container p {\n
+                line-height: 1.4;\n
+            }\n
             #profile-container img {\n
                 width: 220px;\n
                 margin-right: 20px;\n
@@ -101,7 +104,7 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
                 text-align: center;\n
             }\n
             .pick-container {\n
-                height: 460px;\n
+                height: 435px;\n
                 width: 33%;\n
                 border-bottom: none !important;\n
                 overflow: hidden; \n
@@ -117,14 +120,14 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
             }\n
             .img-container-staff {\n
                 width: 100%;\n
-                height: 120px;\n
-                align-items: center;\n
+                height: 180px;\n
+                align-items: flex-end;\n
                 margin-bottom: 6px;\n
                 display: flex;\n
-                justify-content: center;\n
+                justify-content: left;\n
             }\n
             .img-container-staff img{\n
-                max-height: 120px;\n
+                max-height: 180px;\n
             }\n
             .pick-container h4  {\n
                 margin: 0;\n
