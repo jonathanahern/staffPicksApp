@@ -22,26 +22,19 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
   end
 
   def create
-    puts params
-    puts session[:shop_id]
-    puts "Made it to 1"
     shop_id = session[:shop_id]
-    puts "Made it to 2"
     @employee = Employee.new(employee_params)
-    puts "Made it to 3"
     @employee.shop_id = shop_id
     if @employee.save
-    puts "Made it to 4"
+
       if createPage(@employee)
-      puts "Made it to 5"
         render json: @employee, status: 200
       else
-        puts "Made it to 6"
         render json: {error: "Page didn't save"}, status: 422
       end
 
     else
-      puts "Made it to 7"
+
       render json: {error: @employee.errors.full_messages, status: 422 }
 
     end
