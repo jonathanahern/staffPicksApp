@@ -186,12 +186,13 @@ function setupPageForCollections() {
     ".staff-pick-alert p {" +
         "position: absolute;" +
         "transform: translate(50%, -50%);" +
-        "top: 45%;" +
+        "top: 52%;" +
         "right: 50%;" +
         "color: white;" +
         "text-align: center;" +
         "font-size: .70em;" +
         "line-height: 1.3;" +
+        "margin: 0;" +
     "}" +
     "@media screen and (max-width: 500px) {" +
         ".staff-pick-alert p {" +
