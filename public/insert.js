@@ -187,6 +187,9 @@ function setupPageForCollections() {
         "top: 0px;" +
         "right: 0px;" +
         "width: 58px;" +
+        "display: flex;" +
+        "align-items: center;" +
+        "justify-content: center;" +
     "}" +
     ".staff-pick-alert .text-container-staff {" +
         "position: absolute;" +
@@ -195,7 +198,7 @@ function setupPageForCollections() {
         "right: 50%;" +
         "margin: 0;" +
     "}" +
-    ".staff-pick-alert p {" +
+    ".text-container-staff p {" +
         "color: white;" +
         "text-align: center;" +
         "font-size: .70em;" +
