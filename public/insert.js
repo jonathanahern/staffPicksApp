@@ -195,7 +195,7 @@ function setupPageForCollections() {
         "position: absolute;" +
         "transform: translate(50%, -50%);" +
         "top: 50%;" +
-        "right: 50%;" +
+        "right: 49%;" +
         "margin: 0;" +
     "}" +
     ".text-container-staff p {" +
