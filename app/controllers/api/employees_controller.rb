@@ -117,11 +117,13 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
             }\n
             .img-container-staff {\n
                 width: 100%;\n
-                max-height: 200px;\n
                 align-items: center;\n
                 margin-bottom: 6px;\n
                 display: flex;\n
                 justify-content: center;\n
+            }\n
+            .img-container-staff img{\n
+                max-height: 200px;\n
             }\n
             .pick-container h4  {\n
                 margin: 0;\n
@@ -137,6 +139,7 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
                 }\n
                 .pick-container {\n
                   width: 280px;\n
+                  height: inherit;\n
                 }\n
             };\n
         </style>"
