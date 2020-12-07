@@ -194,7 +194,7 @@ function setupPageForCollections() {
     ".staff-pick-alert .text-container-staff {" +
         "position: absolute;" +
         "transform: translate(50%, -50%);" +
-        "top: 52%;" +
+        "top: 50%;" +
         "right: 50%;" +
         "margin: 0;" +
     "}" +
