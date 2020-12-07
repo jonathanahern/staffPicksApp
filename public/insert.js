@@ -147,11 +147,16 @@ function insertPickPic(ele) {
   
   container.appendChild(circle);
 
+  let textContainer = document.createElement("div");
+  textContainer.className = "text-container-staff";
+  container.appendChild(textContainer);
+
+
   let text = document.createElement("p");
   text.innerHTML = "STAFF<br/>PICK!";
   text.className = "staff-pick-lettering";
   
-  container.appendChild(text);
+  textContainer.appendChild(text);
 }
 
 function loadStickerImage(){
