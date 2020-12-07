@@ -59,6 +59,8 @@ class EmployeeNew extends Component {
     if (this.checkForErrors() === false){
       this.setState({ save_loading: true });
       const employee = Object.assign({}, this.state);
+      console.log(employee);
+      console.log(this.state);
       this.props.createEmployee(employee).then(data =>
         this.processSubmit(data)
         );
