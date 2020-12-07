@@ -188,11 +188,14 @@ function setupPageForCollections() {
         "right: 0px;" +
         "width: 58px;" +
     "}" +
-    ".staff-pick-alert p {" +
+    ".staff-pick-alert .text-container-staff {" +
         "position: absolute;" +
         "transform: translate(50%, -50%);" +
         "top: 52%;" +
         "right: 50%;" +
+        "margin: 0;" +
+    "}" +
+    ".staff-pick-alert p {" +
         "color: white;" +
         "text-align: center;" +
         "font-size: .70em;" +
