@@ -232,6 +232,7 @@ GEM
       rails (> 5.2.1)
       redirect_safely (~> 1.0)
       shopify_api (~> 9.1)
+    shopify_gdpr (0.2.0)
     spring (2.1.1)
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
@@ -286,6 +287,7 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   selenium-webdriver
   shopify_app
+  shopify_gdpr
   spring
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data
