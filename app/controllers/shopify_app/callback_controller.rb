@@ -30,6 +30,7 @@ module ShopifyApp
         recurring_application_charge = ShopifyAPI::RecurringApplicationCharge.new(
           name: "Staff Picks",
           price: 2.99,
+          test: true,
           return_url: "https://staff-picks-app.herokuapp.com/activatecharge",
           trial_days: 7)
         if recurring_application_charge.save
