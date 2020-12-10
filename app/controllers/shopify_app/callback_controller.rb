@@ -24,6 +24,7 @@ module ShopifyApp
       ShopifyAPI::Base.activate_session(shopify_session)
       ShopifyAPI::Base.api_version = ShopifyApp.configuration.api_version
       result = ShopifyAPI::RecurringApplicationCharge.current
+
       if result
         redirect_to(return_address)
       else
@@ -31,7 +32,7 @@ module ShopifyApp
           name: "Staff Picks",
           price: 2.99,
           test: true,
-          return_url: "https://staff-picks-app.herokuapp.com/activatecharge",
+          return_url: "https://5a96a95f7552.ngrok.io/activatecharge",
           trial_days: 7)
         if recurring_application_charge.save
           redirect_to(recurring_application_charge.confirmation_url)
