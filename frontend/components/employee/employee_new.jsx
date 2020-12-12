@@ -98,7 +98,6 @@ class EmployeeNew extends Component {
     const title = `Add New Staff`;
     return (
       <AppProvider>
-        <br /><br />
         <Page
           title={title}
           breadcrumbs={[{ content: "Back", onAction: this.goBack }]}

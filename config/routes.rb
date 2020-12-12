@@ -5,7 +5,11 @@ Rails.application.routes.draw do
       resources :employees
       resources :products
       resources :front_end, only: [:index, :show]
-      resources :settings, only: [:show, :create, :update]
+      resources :settings, only: [:show, :create, :update] do
+        member do
+          post 'insertStickers'
+        end
+      end
       resources :emails, only: [:create]
       resources :pages, only: [:index] do
         member do

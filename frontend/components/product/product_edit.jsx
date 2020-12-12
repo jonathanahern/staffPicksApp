@@ -199,8 +199,6 @@ class ProductEdit extends Component {
         <AppProvider>
           <AppBridgeProvider config={config}>
             <Page>
-              <br />
-              <br />
               <Link to="/picks">
                 <p id="back-link">
                   <svg height="20" width="20">

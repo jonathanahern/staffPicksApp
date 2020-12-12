@@ -165,8 +165,6 @@ class EmployeeIndex extends React.Component {
           },
         }}
       >
-        <br />
-        <br />
         <Page title="Staff">
           {noStaff}
           <Card>

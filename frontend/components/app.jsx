@@ -1,6 +1,7 @@
 import React from "react";
 import { Route } from "react-router-dom";
 import NavBar from "./navbar";
+import Setup from "./setup/setup_container";
 import EmployeeIndexContainer from "./employee/employee_index_container";
 import EmployeeNewContainer from "./employee/employee_new_container";
 import EmployeeEditContainer from "./employee/employee_edit_container";
@@ -13,6 +14,7 @@ import HelpContainer from "./help/help_container"
 const App = () => (
   <>
     <NavBar />
+    <Setup />
     <Route exact path="/" component={EmployeeIndexContainer} />
     <Route exact path="/staff" component={EmployeeIndexContainer} />
     <Route exact path="/picks" component={ProductIndexContainer} />
@@ -22,9 +24,6 @@ const App = () => (
     <Route exact path="/products/new" component={ProductNewContainer} />
     <Route path="/products/:productId/edit" component={ProductEditContainer} />
     <Route exact path="/help" component={HelpContainer} />
-
-
-    {/* <AuthRoute exact path="/" component={Splash} /> */}
   </>
 );
 

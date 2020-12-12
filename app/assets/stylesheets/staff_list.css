@@ -95,6 +95,10 @@ a {
     margin: 4px 0 8px 20px;
 }
 
+.italics{
+    font-style: italic;
+}
+
 .list-image{
     width: 60px;
     max-height: 100px;

@@ -29,3 +29,9 @@ export const createStaffPage = pageData => dispatch => (
     dispatch(receivePageData(pageData));
   })
 );
+
+export const insertStickers = () => dispatch => (
+  APIUtil.insertStickers().then(resp => {
+    dispatch(insertStickers(resp));
+  })
+);

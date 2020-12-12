@@ -24,3 +24,13 @@ export const createStaffPage = (pageData) =>
     method: "post",
     data: { pageData },
   });
+
+export const insertStickers = () =>
+  $.ajax({
+    url: `/api/settings/1/insertStickers`,
+    headers: {
+      "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content"),
+    },
+    method: "post",
+    data: {},
+  });

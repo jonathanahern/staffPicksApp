@@ -174,8 +174,6 @@ class ProductIndex extends React.Component {
           },
         }}
       >
-        <br />
-        <br />
         <Page title="Picks">
           {noProducts}
           <Card>

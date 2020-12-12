@@ -166,8 +166,6 @@ class ProductNew extends Component {
     return (
       <AppProvider>
         <AppBridgeProvider config={config}>
-          <br />
-          <br />
           <Page>
             <Link to="/picks">
               <p id="back-link">

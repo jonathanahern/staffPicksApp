@@ -58,7 +58,6 @@ class Settings extends Component {
     this.setState({ subtitle: "" });
     this.setState({ title_loading: false });
     this.setState({ page_created: true });
-
   }
 
   handleStickerChange(checked, newVal) {
@@ -167,6 +166,13 @@ class Settings extends Component {
     this.setState({ save_disabled: true });
   }
 
+  createStickerDiv(){
+    console.log("STICKER");
+    this.props.insertStickers().then(data =>
+      console.log(data)
+    );
+  }
+
   pageCreatedAlert(){
     if (this.state.page_created){
       return <>
@@ -260,8 +266,6 @@ class Settings extends Component {
     );
     return (
       <AppProvider>
-        <br />
-        <br />
         <Page title="Settings/Setup">
           <Card sectioned title="Select a staff picks sticker for collection pages">
             <Stack>
@@ -303,7 +307,17 @@ class Settings extends Component {
               />
             </Stack>
             <br />
-            <TextStyle variation="strong">To Setup:</TextStyle>
+            <br/>
+            <hr/>
+            <br/>
+            <Button
+            onClick={() => this.createStickerDiv()}
+            primary={true}>
+              Add Stickers
+            </Button><br/><br/>
+            <TextStyle variation="subdued">Click here to insert code into your theme that places pick stickers into your collection</TextStyle>
+
+            {/* <TextStyle variation="strong">To Setup:</TextStyle>
             <br />
             <List type="number">
               <List.Item>Navigate to Online Store/Themes and in the Actions dropdown click Edit code. It is also recommended to "Download theme file" for a backup.</List.Item>
@@ -317,7 +331,7 @@ class Settings extends Component {
               multiline={2}
               readOnly={true}
               helpText="The <!-- --> line is only for context and should not be pasted into your liquid files"
-            />
+            /> */}
           </Card>
           <br />
           <Card sectioned title="Select a product page layout">

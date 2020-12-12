@@ -3,7 +3,7 @@ ShopifyApp.configure do |config|
   config.api_key = ENV['api_key']
   config.secret = ENV['api_secret']
   config.old_secret = ""
-  config.scope = "read_products, write_products, read_script_tags, write_script_tags, read_content, write_content, read_product_listings" 
+  config.scope = "read_products, write_products, read_script_tags, write_script_tags, read_content, write_content, read_product_listings, read_themes, write_themes" 
   config.embedded_app = true
   config.after_authenticate_job = false
   config.api_version = "2020-10"

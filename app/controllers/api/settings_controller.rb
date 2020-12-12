@@ -21,6 +21,28 @@ class Api::SettingsController < ShopifyApp::AuthenticatedController
 
   end
 
+  def insertStickers
+    themeID = ShopifyAPI::Theme.find(:all).where(role: "main").first.theme_store_id
+    allAssets = ShopifyAPI::Asset.find(:all)
+    productGridAssets = allAssets.select do |asset|
+      asset.key.include?("product") && (asset.key.include?("grid"))
+    end
+    assetKey = productGridAssets.first.key;
+    theAsset = ShopifyAPI::Asset.find(assetKey)
+    stickerStr = '
+          <div class="staff-pick-alert" data-prodID="{{ product.id }}"></div>'
+    imgInd = theAsset.value.index('<img')
+    newStr = theAsset.value[imgInd..-1]
+    insertPoint = newStr.index('>') + imgInd + 1
+    newValue = theAsset.value.insert(insertPoint, stickerStr)
+    theAsset.value = newValue + ""
+    if theAsset.save
+
+    else
+
+    end
+  end
+
 private
 
     def setting_params
@@ -126,3 +148,4 @@ private
     end
 
 end
+

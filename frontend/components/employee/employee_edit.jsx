@@ -143,7 +143,6 @@ class EmployeeEdit extends React.Component {
     const delete_subtitle = `Doing so will delete their page and all of their pick reviews. This cannot be undone.`
     return (
       <AppProvider>
-        <br/><br/>
         <Page
           title={title}
           breadcrumbs={[{ content: "Back", onAction: this.goBack }]}
