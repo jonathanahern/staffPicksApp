@@ -20,6 +20,8 @@ class Settings extends Component {
       subtitle: "",
       sticker: this.props.settings.sticker,
       layout: this.props.settings.layout,
+      save_loading_sticker: false,
+      save_disabled_sticker: false,
       save_loading: false,
       save_disabled: true,
       title_loading: false,
@@ -27,6 +29,7 @@ class Settings extends Component {
       page_created: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.saveSticker = this.saveSticker.bind(this);
     this.handleStickerChange = this.handleStickerChange.bind(this);
     this.handleLayoutChange = this.handleLayoutChange.bind(this);
     this.handleCreatePage = this.handleCreatePage.bind(this);
@@ -89,6 +92,12 @@ class Settings extends Component {
     const settings = Object.assign({}, this.state);
     this.setState({ save_loading: true });
     this.props.updateSetting(settings).then((data) => this.returnToDisabled());
+  }
+
+  saveSticker(){
+    const stickerSettings = { sticker: this.props.settings.sticker, layout: null }
+    this.setState({ save_loading_sticker: true });
+    this.props.updateSetting(stickerSettings).then((data) => this.returnToStickerDisabledSticker());
   }
 
   layoutInstructions(){
@@ -161,6 +170,11 @@ class Settings extends Component {
 
   }
 
+  returnToStickerDisabledSticker(){
+    this.setState({ save_loading_sticker: false });
+    this.setState({ save_disabled_sticker: true });   
+  }
+
   returnToDisabled(){
     this.setState({ save_loading: false });
     this.setState({ save_disabled: true });
@@ -191,7 +205,7 @@ class Settings extends Component {
     let selected = this.state.sticker;
     let selectedLayout = this.state.layout;
 
-    const {save_disabled, save_loading, title_disabled, title_loading} = this.state;
+    const {save_disabled, save_loading, title_disabled, title_loading, save_disabled_sticker, save_loading_sticker} = this.state;
     const red = (
       <img
         src="https://i.ibb.co/3kW5XsV/red-burst.png"
@@ -306,10 +320,17 @@ class Settings extends Component {
                 onChange={this.handleStickerChange}
               />
             </Stack>
-            <br />
             <br/>
-            <hr/>
-            <br/>
+            <Button
+              onClick={() => this.saveSticker()}
+              loading={save_loading_sticker}
+              disabled={save_disabled_sticker}
+              primary={true}>
+                Save Sticker
+            </Button>
+
+            </Card>
+            <Card>
             <Button
             onClick={() => this.createStickerDiv()}
             primary={true}>
