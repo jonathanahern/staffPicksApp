@@ -19,10 +19,13 @@ class Setup extends Component {
     this.state = {
       staffColor: "positive",
       picksColor: "positive",
+      stickerChoiceColor: "positive",
       loaded: false,
     };
     this.checkTotalEmployees = this.checkTotalEmployees.bind(this);
     this.checkTotalProducts = this.checkTotalProducts.bind(this);
+    this.checkStickerChoice = this.checkStickerChoice.bind(this);
+
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -31,10 +34,13 @@ class Setup extends Component {
           this.checkTotalEmployees()
       } else if (prevProps.products !== this.props.products){
           this.checkTotalProducts()
+      } else if (prevProps.settings.sticker !== this.props.settings.sticker){
+        this.checkStickerChoice()
       }
   }
 
   componentDidMount() {
+    this.props.fetchSetting().then((data) => this.checkStickerChoice());
     this.props.fetchEmployees().then((data) => this.checkTotalEmployees());
     this.props.fetchProducts().then((data) => this.checkTotalProducts());
   }
@@ -56,9 +62,16 @@ class Setup extends Component {
     this.setState({ loaded: true });
   }
 
-  pageCreatedAlert(){
-    console.log(this.state.loaded===true, (this.state.staffColor==="negative" || this.state.picksColor==="negative"));
-    if (this.state.loaded===true && (this.state.staffColor==="negative" || this.state.picksColor==="negative")){
+  checkStickerChoice(){
+    if (this.props.settings.sticker !== "new"){
+      this.setState({ stickerChoiceColor: "positive" });
+    } else {
+      this.setState({ stickerChoiceColor: "negative" });
+    }
+  }
+
+  setupCheck(){
+    if (this.state.loaded===true && (this.state.staffColor==="negative" || this.state.stickerChoiceColor==="negative" || this.state.picksColor==="negative")){
       return <>
       <AppProvider>
          <Page>
@@ -68,7 +81,8 @@ class Setup extends Component {
                <br/>
                <div className="tabbed">
                  <TextStyle variation={this.state.staffColor}>1. Add a staff member in the Staff tab. <span className="italics">Note: A staff's profile requires an image url, so beforehand upload a picture to Shopify Files (Settings/Files) and copy its url. </span></TextStyle><br/>
-                 <TextStyle variation={this.state.picksColor}>2. Add a pick in the Picks tab.</TextStyle>
+                 <TextStyle variation={this.state.picksColor}>2. Add a pick in the Picks tab.</TextStyle><br/>
+                 <TextStyle variation={this.state.stickerChoiceColor}>3. In the settings tab, select a sticker to place on your picks in the collection pages.</TextStyle><br/>
                </div>
            </Card>
          </Page>
@@ -98,7 +112,7 @@ class Setup extends Component {
   render() {
     
     return (<>
-      {this.pageCreatedAlert()}
+      {this.setupCheck()}
       </>
     );
   }

@@ -21,7 +21,7 @@ class Settings extends Component {
       sticker: this.props.settings.sticker,
       layout: this.props.settings.layout,
       save_loading_sticker: false,
-      save_disabled_sticker: false,
+      save_disabled_sticker: true,
       save_loading: false,
       save_disabled: true,
       title_loading: false,
@@ -64,10 +64,12 @@ class Settings extends Component {
   }
 
   handleStickerChange(checked, newVal) {
-    if (this.state.save_disabled){
-      this.setState({ save_disabled: false });
-    }
     this.setState({ sticker: newVal });
+    if (newVal !== this.props.settings.sticker){
+      this.setState({ save_disabled_sticker: false });
+    } else {
+      this.setState({ save_disabled_sticker: true });
+    }
   }
 
   handleLayoutChange(checked, newVal) {
@@ -95,7 +97,7 @@ class Settings extends Component {
   }
 
   saveSticker(){
-    const stickerSettings = { sticker: this.props.settings.sticker, layout: null }
+    const stickerSettings = { sticker: this.state.sticker, layout: null }
     this.setState({ save_loading_sticker: true });
     this.props.updateSetting(stickerSettings).then((data) => this.returnToStickerDisabledSticker());
   }

@@ -12,12 +12,12 @@ class Api::SettingsController < ShopifyApp::AuthenticatedController
 
   def update
     @setting = Shop.find(session[:shop_id])
-debugger
-    # if @setting.update(setting_params)
-    #   render :show
-    # else
-    #   render json: {error: @setting.errors.full_messages, status: 422 }
-    # end
+    setting_obj = setting_params[:sticker].length > 1 ? {sticker: setting_params[:sticker]} : {layout: setting_params[:layout]}
+    if @setting.update(setting_obj)
+      render :show
+    else
+      render json: {error: @setting.errors.full_messages, status: 422 }
+    end
 
   end
 
