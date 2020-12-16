@@ -29,7 +29,6 @@ class Setup extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    // console.log(prevProps.products, this.props.products);
       if (prevProps.employees !== this.props.employees) {
           this.checkTotalEmployees()
       } else if (prevProps.products !== this.props.products){
