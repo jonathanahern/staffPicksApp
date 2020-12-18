@@ -31,7 +31,20 @@ export const createStaffPage = pageData => dispatch => (
 );
 
 export const insertStickers = () => dispatch => (
-  APIUtil.insertStickers().then(resp => {
-    dispatch(insertStickers(resp));
+  APIUtil.insertStickers().then(setting => {
+    dispatch(receiveSetting(setting));
   })
 );
+
+export const clearStickers = () => dispatch => (
+  APIUtil.clearStickers().then(setting => {
+    dispatch(receiveSetting(setting));
+  })
+);
+
+export const insertLayout = (layout) => dispatch => (
+  APIUtil.insertLayout(layout).then(setting => {
+    dispatch(receiveSetting(setting));
+  })
+);
+

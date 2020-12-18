@@ -34,3 +34,25 @@ export const insertStickers = () =>
     method: "post",
     data: {},
   });
+
+export const clearStickers = () =>
+  $.ajax({
+    url: `/api/settings/1/clearStickers`,
+    headers: {
+      "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content"),
+    },
+    method: "delete",
+    data: {},
+  });
+
+export const insertLayout = (layout) =>
+  $.ajax({
+    url: `/api/settings/1/insertLayout`,
+    headers: {
+      "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content"),
+    },
+    method: "post",
+    data: { layout },
+  });
+
+  

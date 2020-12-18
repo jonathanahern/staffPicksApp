@@ -7,7 +7,9 @@ Rails.application.routes.draw do
       resources :front_end, only: [:index, :show]
       resources :settings, only: [:show, :create, :update] do
         member do
-          post 'insertStickers'
+          post :insertStickers
+          post :insertLayout
+          delete :clearStickers
         end
       end
       resources :emails, only: [:create]

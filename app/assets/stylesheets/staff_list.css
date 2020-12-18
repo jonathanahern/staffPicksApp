@@ -103,3 +103,7 @@ a {
     width: 60px;
     max-height: 100px;
 }
+
+.setup-list li{
+    margin: 4px 0;
+}

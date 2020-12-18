@@ -20,13 +20,18 @@ class Settings extends Component {
       subtitle: "",
       sticker: this.props.settings.sticker,
       layout: this.props.settings.layout,
+      sticker_theme: true,
+      layout_theme: this.props.settings.layout_theme,
       save_loading_sticker: false,
       save_disabled_sticker: true,
+      button_loading: false,
       save_loading: false,
       save_disabled: true,
       title_loading: false,
       title_disabled: true,
       page_created: false,
+      sticker_theme_added: false,
+      sticker_theme_cleared: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.saveSticker = this.saveSticker.bind(this);
@@ -46,6 +51,7 @@ class Settings extends Component {
   setupSettings(){
     this.setState({ sticker: this.props.settings["sticker"] });
     this.setState({ layout: this.props.settings["layout"] });
+    this.setState({ sticker_theme: this.props.settings["sticker_theme"] });
   }
 
   handleCreatePage(){
@@ -183,10 +189,29 @@ class Settings extends Component {
   }
 
   createStickerDiv(){
-    console.log("STICKER");
+    this.setState({ button_loading: true });
     this.props.insertStickers().then(data =>
-      console.log(data)
+      this.createStickerResp(data)
     );
+  }
+
+  createStickerResp(data){
+    this.setState({ sticker_theme: this.props.settings["sticker_theme"] });
+    this.setState({ button_loading: false });
+    this.setState({ sticker_theme_added: true });
+  }
+
+  clearStickerDiv(){
+    this.setState({ button_loading: true });
+    this.props.clearStickers().then(data =>
+      this.clearStickerResp(data)
+    );
+  }
+
+  clearStickerResp(data){
+    this.setState({ sticker_theme: this.props.settings["sticker_theme"] });
+    this.setState({ button_loading: false });
+    this.setState({ sticker_theme_cleared: true });
   }
 
   pageCreatedAlert(){
@@ -203,11 +228,56 @@ class Settings extends Component {
     }  
   }
 
+  stickerThemeAdded(){
+    let response = "Sticker code successfully added to theme";
+    let title = "Success";
+    let status = "success";
+    if (!this.props.settings.sticker_theme){
+      response = "There was a problem inserting the code into your theme file. Please contact us for assistance."
+      title = "Error";
+      status = "critical";
+    }
+    if (this.state.sticker_theme_added){
+      return <>
+        <Banner title={title} status={status} onDismiss={() => { this.setState({ sticker_theme_added: false }) }}>
+          <p>{response}</p>
+        </Banner>
+      </>;
+    } else {
+      return <></>;
+    }  
+  }
+
+    stickerThemeCleared(){
+    if (this.state.sticker_theme_cleared){
+      return <>
+        <Banner title="Success" status="success" onDismiss={() => { this.setState({ sticker_theme_cleared: false }) }}>
+          <p>Sticker code successfully cleared from theme</p>
+        </Banner>
+      </>;
+    } else {
+      return <></>;
+    }  
+  }
+
+  addLayoutTheme(){
+    this.setState({ button_loading: true });
+    const layout_data = { layout: this.state.layout };
+    this.props.insertLayout(layout_data).then(data =>
+      this.insertLayoutResp(data)
+    );
+  }
+
+  insertLayoutResp(data){
+    this.setState({ button_loading: false });
+    console.log("Back");
+  }
+
   render() {
     let selected = this.state.sticker;
     let selectedLayout = this.state.layout;
 
-    const {save_disabled, save_loading, title_disabled, title_loading, save_disabled_sticker, save_loading_sticker} = this.state;
+    const {save_disabled, save_loading, title_disabled, title_loading, save_disabled_sticker, save_loading_sticker, button_loading, sticker_theme, layout_theme} = this.state;
     const red = (
       <img
         src="https://i.ibb.co/3kW5XsV/red-burst.png"
@@ -330,16 +400,32 @@ class Settings extends Component {
               primary={true}>
                 Save Sticker
             </Button>
-
             </Card>
-            <Card>
+            <Card sectioned title="Add or delete sticker code in theme file">
+            <Banner title="Warning"  status="warning">
+              <p>Before altering your theme's code we recommend you backup your theme files.</p>
+            </Banner>
+            <br/>
+            <Stack>
             <Button
             onClick={() => this.createStickerDiv()}
-            primary={true}>
-              Add Stickers
-            </Button><br/><br/>
-            <TextStyle variation="subdued">Click here to insert code into your theme that places pick stickers into your collection</TextStyle>
-
+            primary={true}
+            loading={button_loading}
+            disabled={sticker_theme}
+            >
+              Add Sticker Code
+            </Button>
+            <Button
+              onClick={() => this.clearStickerDiv()}
+              loading={button_loading}
+              disabled={!sticker_theme}
+              >
+              Clear Sticker Code
+            </Button>
+            </Stack>
+            <br/>
+            {this.stickerThemeAdded()}
+            {this.stickerThemeCleared()}
             {/* <TextStyle variation="strong">To Setup:</TextStyle>
             <br />
             <List type="number">
@@ -389,7 +475,17 @@ class Settings extends Component {
               readOnly={true}
               helpText = "The <!-- --> lines are only for context and should not be pasted into your liquid files"
             />
+            <Button
+              onClick={() => this.addLayoutTheme()}
+              primary={true}
+              loading={button_loading}
+              disabled={layout_theme}
+              >
+              Add Layout Code
+            </Button>
           </Card>
+
+
             <br />
           <Card sectioned title="Staff Page">
             <TextStyle variation="subdued">Automatically create a page with all your staff. Give it a title, an optional subtitle, and create your custom page.</TextStyle>

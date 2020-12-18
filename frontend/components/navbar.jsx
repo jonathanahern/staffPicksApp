@@ -14,7 +14,7 @@ class NavBar extends Component {
                 <div className="nav-bar-container">
                     <Link className="nav-bar-link" to={`/staff`}><div className="link-underline"></div>Staff</Link>
                     <Link className="nav-bar-link" to={`/picks`}><div className="link-underline"></div>Picks</Link>
-                    <Link className="nav-bar-link" to={`/settings`}><div className="link-underline"></div>Setup</Link>
+                    <Link className="nav-bar-link" to={`/settings`}><div className="link-underline"></div>Settings</Link>
                     <Link className="nav-bar-link" to={`/help`}><div className="link-underline"></div>Help</Link>
                 </div>
                     <br />
