@@ -93,10 +93,45 @@ class Api::SettingsController < ShopifyApp::AuthenticatedController
   end
 
   def insertLayout
+    foundIt = false
+    allAssets = ShopifyAPI::Asset.find(:all)
+    productGridAssets = allAssets.select do |asset|
+      asset.key.include?("product") && !(asset.key.include?("featured") || asset.key.include?("recommend") || asset.key.include?("card") || asset.key.include?("price"))
+    end
+    assetKey = productGridAssets.first.key;
+    theAsset = ShopifyAPI::Asset.find(assetKey)
+    sideColStr = '<div id="full-container-sp">
+      <div id="main-content-sp">
+          
+	'
+    if (params[:layout][:layout] == "side-col")
+      classInd = theAsset.value.index('grid product-single')
+      divInd = theAsset.value[0..classInd].rindex('<div')
+      searchStr = theAsset.value[divInd]
+
+
+
+      newValue = theAsset.value.insert(divInd, sideColStr)
+      theAsset.value = newValue + ""
+      if theAsset.save
+        @setting = Shop.find(session[:shop_id])
+        @setting.layout = "side-col"
+        @setting.layout_theme = true
+        if @setting.save
+          render :show
+        else
+          render json: {error: "Shop not saved", status: 422 }
+        end
+      else
+        render json: {error: "Could not save theme", status: 422 }
+      end
+    end
     debugger
   end
 
 private
+
+
 
     def setting_params
         params.require(:setting).permit(:sticker, :layout)
