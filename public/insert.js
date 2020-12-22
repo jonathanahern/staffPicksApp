@@ -24,7 +24,7 @@ if (url.includes("/pages/")) {
 
     if (eles.length > 0){
         let staffid = eles[0].dataset.staffid.toString();
-        fetch(`https://5a96a95f7552.ngrok.io/api/pages?employeeid=${staffid}`, {
+        fetch(`https://16c241047cd4.ngrok.io/api/pages?employeeid=${staffid}`, {
           method: "GET",
         })
           .then((res) => res.json())
@@ -34,7 +34,7 @@ if (url.includes("/pages/")) {
     } else {
       const staffEle = document.getElementById("staff-profiles-ele");
       if (staffEle){ 
-        fetch(`https://5a96a95f7552.ngrok.io/api/pages/1/getStaff?shopDom=${shop}`, {
+        fetch(`https://16c241047cd4.ngrok.io/api/pages/1/getStaff?shopDom=${shop}`, {
           method: "GET",
         })
           .then((res) => res.json())
@@ -230,7 +230,7 @@ function setupPageForCollections() {
 if (url.includes('/products/') && pickedProducts && pickedProducts.includes(prodID)) {
     setupPageForPick();
 
-  fetch(`https://5a96a95f7552.ngrok.io/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
+  fetch(`https://16c241047cd4.ngrok.io/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
     method: "GET",
     })
   .then(res => res.json())
@@ -242,7 +242,7 @@ if (url.includes('/products/') && pickedProducts && pickedProducts.includes(prod
 function setPicks (shop) {
   var secondDiff = getTimeDifference();
   if (secondDiff >= recheckTime){
-    fetch(`https://5a96a95f7552.ngrok.io/api/front_end?shop=${shop}`, {
+    fetch(`https://16c241047cd4.ngrok.io/api/front_end?shop=${shop}`, {
         method: "GET",
       })
         .then((res) => res.json())
