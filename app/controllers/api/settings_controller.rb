@@ -131,7 +131,9 @@ class Api::SettingsController < ShopifyApp::AuthenticatedController
 
 private
 
+  def find_asset()
 
+  end
 
     def setting_params
         params.require(:setting).permit(:sticker, :layout)
