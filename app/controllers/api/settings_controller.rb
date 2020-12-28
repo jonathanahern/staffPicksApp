@@ -132,7 +132,7 @@ class Api::SettingsController < ShopifyApp::AuthenticatedController
 private
 
   def find_asset()
-
+     allAssets = ShopifyAPI::Asset.find(:all)
   end
 
     def setting_params
