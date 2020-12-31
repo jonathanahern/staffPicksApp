@@ -100,7 +100,7 @@ class Setup extends Component {
                  <li><TextStyle variation={this.state.staffColor}>Staff: Add a staff member. <span className="italics">Note: A staff's profile requires an image url. Beforehand, upload a picture to Shopify Files (Settings/Files) and copy its url. </span></TextStyle><br/></li>
                  <li><TextStyle variation={this.state.picksColor}>Picks: Add a pick.</TextStyle><br/></li>
                  <li><TextStyle variation={this.state.stickerChoiceColor}>Settings: Select a sticker to place on your picks in the collection pages.</TextStyle><br/></li>
-                 <li><TextStyle variation={this.state.stickerThemeColor}>Settings: Click <span className="italics">Add Sticker Code</span> to automatically add sticker code to your theme files. </TextStyle><br/></li>
+                 <li><TextStyle variation={this.state.stickerThemeColor}>Settings: Add the sticker code to your theme file.</TextStyle><br/></li>
 
                </ul>
            </Card>

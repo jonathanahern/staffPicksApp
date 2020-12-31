@@ -22,73 +22,94 @@ class Api::SettingsController < ShopifyApp::AuthenticatedController
   end
 
   def insertStickers
-    # themeID = ShopifyAPI::Theme.find(:all).where(role: "main").first.theme_store_id
-    allAssets = ShopifyAPI::Asset.find(:all)
-    productGridAssets = allAssets.select do |asset|
-      asset.key.include?("product") && (asset.key.include?("grid"))
-    end
-    assetKey = productGridAssets.first.key;
-    theAsset = ShopifyAPI::Asset.find(assetKey)
-    stickerStr = '
-          <div class="staff-pick-alert" data-prodID="{{ product.id }}"></div>'
-    imgInd = theAsset.value.index('<img')
-    if (imgInd!=nil) 
-      newStr = theAsset.value[imgInd..-1]
-      insertPoint = newStr.index('>') + imgInd + 1
-      newValue = theAsset.value.insert(insertPoint, stickerStr)
-      theAsset.value = newValue + ""
-    end
-    if (imgInd!=nil)
-      if theAsset.save
-        @setting = Shop.find(session[:shop_id])
-        @setting.sticker_theme = true
-        if @setting.save
-          render :show
-        else
-          render json: {error: "Shop not saved", status: 422 }
-        end
+    @setting = Shop.find(session[:shop_id])
+
+    if (params["auto"]["auto"] == "manual")
+      @setting.sticker_theme = true
+      if @setting.save
+        render :show
       else
-        render json: {error: "Could not save theme", status: 422 }
+        render json: {error: "Shop not saved", status: 422 }
+      end
+      return
+    end
+
+    theme_hash = get_theme_hash
+
+    unless theme_hash
+      render json: {error: "Could not alter this theme", status: 422 }
+      return
+    end
+
+    theAsset = get_asset(theme_hash)
+
+    unless theAsset
+      render json: {error: "No assets found", status: 422 }
+      return
+    end
+
+    if theAsset.value.include?("staff-pick-alert")
+      render json: {error: "Staff pick alert already present", status: 422 }
+      return
+    end
+
+    new_asset_value = new_asset_value(theAsset.value)
+
+    unless new_asset_value
+      render json: {error: "Could not alter asset value", status: 422 }
+      return
+    end
+
+    theAsset.value = new_asset_value
+    
+    if theAsset.save
+      @setting.sticker_theme = true
+      if @setting.save
+        render :show
+      else
+        render json: {error: "Shop not saved", status: 422 }
       end
     else
-        render json: {error: "Could not find img element", status: 422 }
+      render json: {error: "Could not save Asset", status: 422 }
     end
+
   end
 
   def clearStickers
-    foundIt = false
-    allAssets = ShopifyAPI::Asset.find(:all)
-    productGridAssets = allAssets.select do |asset|
-      asset.key.include?("product") && (asset.key.include?("grid"))
-    end
-    assetKey = productGridAssets.first.key;
-    theAsset = ShopifyAPI::Asset.find(assetKey)
-    stickerStr = '
-          <div class="staff-pick-alert" data-prodID="{{ product.id }}"></div>'
-    stickerStrShort = '<div class="staff-pick-alert" data-prodID="{{ product.id }}"></div>'
-    
-    if theAsset.value.slice!(stickerStr)==nil
-      if theAsset.value.slice!(stickerStrShort)!=nil
-        foundIt = true;
-      end
-    else
-      foundIt = true;
+    @setting = Shop.find(session[:shop_id])
+
+    theme_hash = get_theme_hash
+
+    unless theme_hash
+      render json: {error: "Could not alter this theme", status: 422 }
+      return
     end
 
-    if (foundIt)
-      if theAsset.save
-        @setting = Shop.find(session[:shop_id])
-        @setting.sticker_theme = false
-        if @setting.save
-          render :show
-        else
-          render json: {error: "Shop not saved", status: 422 }
-        end
+    theAsset = get_asset(theme_hash)
+
+    unless theAsset
+      render json: {error: "No assets found", status: 422 }
+      return
+    end
+
+    new_asset_value = new_asset_value_no_sticker(theAsset.value)
+
+    unless new_asset_value
+      render json: {error: "Could not alter asset value", status: 422 }
+      return
+    end
+
+    theAsset.value = new_asset_value
+    
+    if theAsset.save
+      @setting.sticker_theme = false
+      if @setting.save
+        render :show
       else
-        render json: {error: "Could not alter theme file", status: 422 }
+        render json: {error: "Shop not saved", status: 422 }
       end
     else
-        render json: {error: "Could not alter theme file", status: 422 }
+      render json: {error: "Could not save Asset", status: 422 }
     end
   end
 
@@ -126,13 +147,71 @@ class Api::SettingsController < ShopifyApp::AuthenticatedController
         render json: {error: "Could not save theme", status: 422 }
       end
     end
-    debugger
   end
 
 private
 
-  def find_asset()
-     allAssets = ShopifyAPI::Asset.find(:all)
+  def get_theme_hash
+    name = ShopifyAPI::Theme.find(:all).where(role: "main").first.name
+
+    themes_hash = {
+      "Debut" => {
+        :sticker_file => 'product-card-grid',
+        :layout_file => 'product-template'
+      }
+    }
+
+    return themes_hash[name]
+  end
+
+  def get_asset(theme_hash_ele)
+    allAssets = ShopifyAPI::Asset.find(:all)
+    productGridAssets = allAssets.select do |asset|
+      asset.key.include?(theme_hash_ele[:sticker_file])
+    end
+
+    if productGridAssets.length > 0
+      assetKey = productGridAssets.first.key;
+      theAsset = ShopifyAPI::Asset.find(assetKey)
+      if theAsset
+        return theAsset
+      else
+        return false
+      end
+    else
+      return false
+    end
+  end
+
+  def new_asset_value(old_value)
+    imgInd = old_value.index('<img')
+    if (imgInd!=nil)
+      stickerStr = '
+          <div class="staff-pick-alert" data-prodID="{{ product.id }}"></div>'
+      newStr = old_value[imgInd..-1]
+      insertPoint = newStr.index('>') + imgInd + 1
+      newValue = old_value.insert(insertPoint, stickerStr)
+      return newValue
+    else
+      return false   
+    end
+  end
+
+  def new_asset_value_no_sticker(old_value)
+    stickerStr = '
+          <div class="staff-pick-alert" data-prodID="{{ product.id }}"></div>'
+    stickerStrShort = '<div class="staff-pick-alert" data-prodID="{{ product.id }}"></div>'
+    
+    debugger
+    if old_value.slice!(stickerStr)==nil
+      if old_value.slice!(stickerStrShort)!=nil
+        return old_value
+      else
+        return false
+      end
+    else
+      return old_value;
+    end
   end
 
     def setting_params

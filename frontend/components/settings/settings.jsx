@@ -9,7 +9,8 @@ import {
   Card,
   TextField,
   TextStyle,
-  List
+  List,
+  Modal
 } from "@shopify/polaris";
 
 class Settings extends Component {
@@ -32,6 +33,7 @@ class Settings extends Component {
       page_created: false,
       sticker_theme_added: false,
       sticker_theme_cleared: false,
+      sticker_modal_open: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.saveSticker = this.saveSticker.bind(this);
@@ -190,15 +192,16 @@ class Settings extends Component {
 
   createStickerDiv(){
     this.setState({ button_loading: true });
-    this.props.insertStickers().then(data =>
+    this.props.insertStickers({auto: "auto"}).then(data =>
       this.createStickerResp(data)
     );
   }
 
   createStickerResp(data){
+    this.closeStickerModal();
     this.setState({ sticker_theme: this.props.settings["sticker_theme"] });
     this.setState({ button_loading: false });
-    this.setState({ sticker_theme_added: true });
+    this.setState({ sticker_theme_added: true, sticker_theme_cleared: false });
   }
 
   clearStickerDiv(){
@@ -211,7 +214,7 @@ class Settings extends Component {
   clearStickerResp(data){
     this.setState({ sticker_theme: this.props.settings["sticker_theme"] });
     this.setState({ button_loading: false });
-    this.setState({ sticker_theme_cleared: true });
+    this.setState({ sticker_theme_cleared: true, sticker_theme_added: false });
   }
 
   pageCreatedAlert(){
@@ -233,7 +236,7 @@ class Settings extends Component {
     let title = "Success";
     let status = "success";
     if (!this.props.settings.sticker_theme){
-      response = "There was a problem inserting the code into your theme file. Please contact us for assistance."
+      response = "Your theme was not compatible with the installation process. Either contact us for assistance or use the detailed manual installation."
       title = "Error";
       status = "critical";
     }
@@ -249,15 +252,38 @@ class Settings extends Component {
   }
 
     stickerThemeCleared(){
+    let response = "Sticker code successfully cleared from theme";
+    let title = "Success";
+    let status = "success";
+    if (this.props.settings.sticker_theme){
+      response = "Your theme was not compatible with clearing the sticker code. Contact us for assistance."
+      title = "Error";
+      status = "critical";
+    }
     if (this.state.sticker_theme_cleared){
       return <>
-        <Banner title="Success" status="success" onDismiss={() => { this.setState({ sticker_theme_cleared: false }) }}>
-          <p>Sticker code successfully cleared from theme</p>
+        <Banner title={title} status={status} onDismiss={() => { this.setState({ sticker_theme_cleared: false }) }}>
+          <p>{response}</p>
         </Banner>
       </>;
     } else {
       return <></>;
     }  
+  }
+
+  closeStickerModal(){
+    this.setState({ sticker_modal_open: false });
+  }
+
+  openStickerModal(){
+    this.setState({ sticker_modal_open: true });
+  }
+
+  addStickerManually(){
+    this.setState({ button_loading: true });
+    this.props.insertStickers({auto: "manual"}).then(data =>
+      this.createStickerResp()
+    );
   }
 
   addLayoutTheme(){
@@ -277,7 +303,7 @@ class Settings extends Component {
     let selected = this.state.sticker;
     let selectedLayout = this.state.layout;
 
-    const {save_disabled, save_loading, title_disabled, title_loading, save_disabled_sticker, save_loading_sticker, button_loading, sticker_theme, layout_theme} = this.state;
+    const {save_disabled, save_loading, title_disabled, title_loading, save_disabled_sticker, save_loading_sticker, button_loading, sticker_theme, layout_theme, sticker_modal_open} = this.state;
     const red = (
       <img
         src="https://i.ibb.co/3kW5XsV/red-burst.png"
@@ -351,6 +377,7 @@ class Settings extends Component {
 
     );
     return (
+      <>
       <AppProvider>
         <Page title="Settings/Setup">
           <Card sectioned title="Select a staff picks sticker for collection pages">
@@ -402,10 +429,13 @@ class Settings extends Component {
             </Button>
             </Card>
             <Card sectioned title="Add or delete sticker code in theme file">
+            <TextStyle><span className="italics">Add Sticker Code</span> to automatically add sticker code to your theme file or <span className="italics">Add Manually</span> if your theme is not compatible with setup.</TextStyle><br/>
+            <br/>
             <Banner title="Warning"  status="warning">
               <p>Before altering your theme's code we recommend you backup your theme files.</p>
             </Banner>
             <br/>
+            <div className="button-separate">
             <Stack>
             <Button
             onClick={() => this.createStickerDiv()}
@@ -423,24 +453,18 @@ class Settings extends Component {
               Clear Sticker Code
             </Button>
             </Stack>
+              <Button
+                onClick={() => this.openStickerModal()}
+                primary={true}
+                loading={button_loading}
+                disabled={sticker_theme}
+              >
+              Add Manually
+            </Button>
+            </div>
             <br/>
             {this.stickerThemeAdded()}
             {this.stickerThemeCleared()}
-            {/* <TextStyle variation="strong">To Setup:</TextStyle>
-            <br />
-            <List type="number">
-              <List.Item>Navigate to Online Store/Themes and in the Actions dropdown click Edit code. It is also recommended to "Download theme file" for a backup.</List.Item>
-              <List.Item>Open the product-card-grid liquid file, or the file that displays the product on collection pages.</List.Item>
-              <List.Item>Locate the img element that displays the product image.</List.Item>
-              <List.Item>Copy and paste the staff-pick-alert div directly beneath the img element.</List.Item>
-            </List>
-            <br />
-            <TextField
-              value={stickerInsertion}
-              multiline={2}
-              readOnly={true}
-              helpText="The <!-- --> line is only for context and should not be pasted into your liquid files"
-            /> */}
           </Card>
           <br />
           <Card sectioned title="Select a product page layout">
@@ -535,6 +559,39 @@ class Settings extends Component {
           <br />
         </Page>
       </AppProvider>
+       <AppProvider>
+          <Modal
+            open={sticker_modal_open}
+            onClose={() => this.closeStickerModal()}
+            title="Manual Sticker Setup"
+          >
+            <Modal.Section>
+              <TextStyle variation="strong">To Setup Stickers Manually:</TextStyle>
+            <br />
+            <List type="number">
+              <List.Item>Navigate to Online Store/Themes and in the Actions dropdown click Edit code. It is also recommended to "Download theme file" for a backup.</List.Item>
+              <List.Item>Open the product-card-grid liquid file, or the file that displays the product on collection pages.</List.Item>
+              <List.Item>Locate the img element that displays the product image.</List.Item>
+              <List.Item>Copy and paste the staff-pick-alert div directly beneath the img element.</List.Item>
+               <TextField
+              value={stickerInsertion}
+              multiline={2}
+              readOnly={true}
+              helpText="The <!-- --> line is only for context and should not be pasted into your liquid files"
+              />
+              <List.Item>Once you have successfully added the code to your theme, click Added to let us know.</List.Item>
+            </List>
+            <br />
+              <Stack>
+                <Button primary={true} onClick={() => this.addStickerManually()}>
+                  Added
+                </Button>
+                <Button onClick={() => this.closeStickerModal()}>Cancel</Button>
+              </Stack>
+            </Modal.Section>
+          </Modal>
+        </AppProvider>
+        </>
     );
   }
 }

@@ -11,7 +11,7 @@ const mapDispatchToProps = (dispatch) => ({
   fetchSetting: (shopId) => dispatch(fetchSetting(shopId)),
   updateSetting: (setting) => dispatch(updateSetting(setting)),
   createStaffPage: (pageData) => dispatch(createStaffPage(pageData)),
-  insertStickers: () => dispatch(insertStickers()),
+  insertStickers: (auto) => dispatch(insertStickers(auto)),
   clearStickers: () => dispatch(clearStickers()),
   insertLayout: (layout) =>dispatch(insertLayout(layout)),
 });

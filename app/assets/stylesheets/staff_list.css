@@ -107,3 +107,8 @@ a {
 .setup-list li{
     margin: 4px 0;
 }
+
+.button-separate{
+    display: flex;
+    justify-content: space-between;
+}

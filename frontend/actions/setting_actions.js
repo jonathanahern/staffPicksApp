@@ -30,8 +30,8 @@ export const createStaffPage = pageData => dispatch => (
   })
 );
 
-export const insertStickers = () => dispatch => (
-  APIUtil.insertStickers().then(setting => {
+export const insertStickers = (auto) => dispatch => (
+  APIUtil.insertStickers(auto).then(setting => {
     dispatch(receiveSetting(setting));
   })
 );

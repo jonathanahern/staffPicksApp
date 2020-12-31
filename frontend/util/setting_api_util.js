@@ -25,14 +25,14 @@ export const createStaffPage = (pageData) =>
     data: { pageData },
   });
 
-export const insertStickers = () =>
+export const insertStickers = (auto) =>
   $.ajax({
     url: `/api/settings/1/insertStickers`,
     headers: {
       "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content"),
     },
     method: "post",
-    data: {},
+    data: { auto },
   });
 
 export const clearStickers = () =>
