@@ -193,11 +193,11 @@ class Settings extends Component {
   createStickerDiv(){
     this.setState({ button_loading: true });
     this.props.insertStickers({auto: "auto"}).then(data =>
-      this.createStickerResp(data)
+      this.createStickerResp()
     );
   }
 
-  createStickerResp(data){
+  createStickerResp(){
     this.closeStickerModal();
     this.setState({ sticker_theme: this.props.settings["sticker_theme"] });
     this.setState({ button_loading: false });
@@ -236,7 +236,7 @@ class Settings extends Component {
     let title = "Success";
     let status = "success";
     if (!this.props.settings.sticker_theme){
-      response = "Your theme was not compatible with the installation process. Either contact us for assistance or use the detailed manual installation."
+      response = `${this.props.settings.error} Either contact us for assistance or use the detailed manual installation.`
       title = "Error";
       status = "critical";
     }
@@ -256,7 +256,7 @@ class Settings extends Component {
     let title = "Success";
     let status = "success";
     if (this.props.settings.sticker_theme){
-      response = "Your theme was not compatible with clearing the sticker code. Contact us for assistance."
+      response = `${this.props.settings.error} Contact us for assistance.`
       title = "Error";
       status = "critical";
     }
@@ -573,13 +573,13 @@ class Settings extends Component {
               <List.Item>Open the product-card-grid liquid file, or the file that displays the product on collection pages.</List.Item>
               <List.Item>Locate the img element that displays the product image.</List.Item>
               <List.Item>Copy and paste the staff-pick-alert div directly beneath the img element.</List.Item>
-               <TextField
-              value={stickerInsertion}
-              multiline={2}
-              readOnly={true}
-              helpText="The <!-- --> line is only for context and should not be pasted into your liquid files"
+              <TextField
+                value={stickerInsertion}
+                multiline={2}
+                readOnly={true}
+                helpText="The <!-- --> line is only for context and should not be pasted into your liquid files"
               />
-              <List.Item>Once you have successfully added the code to your theme, click Added to let us know.</List.Item>
+              <List.Item>Once you have successfully added the code to your theme, click <span className="italics">Added</span> to save.</List.Item>
             </List>
             <br />
               <Stack>

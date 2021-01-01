@@ -29,7 +29,8 @@ class Api::SettingsController < ShopifyApp::AuthenticatedController
       if @setting.save
         render :show
       else
-        render json: {error: "Shop not saved", status: 422 }
+        @setting.error = "Shop not saved"
+        render :show
       end
       return
     end
@@ -37,26 +38,30 @@ class Api::SettingsController < ShopifyApp::AuthenticatedController
     theme_hash = get_theme_hash
 
     unless theme_hash
-      render json: {error: "Could not alter this theme", status: 422 }
+      @setting.error = "Shop's theme has not been integrated with the app for automatic insertion."
+      render :show
       return
     end
 
     theAsset = get_asset(theme_hash)
 
     unless theAsset
-      render json: {error: "No assets found", status: 422 }
+      @setting.error = "Could not find asset file."
+      render :show
       return
     end
 
     if theAsset.value.include?("staff-pick-alert")
-      render json: {error: "Staff pick alert already present", status: 422 }
+      @setting.error = "File already contain Staff Pick code."
+      render :show
       return
     end
 
-    new_asset_value = new_asset_value(theAsset.value)
+    new_asset_value = new_asset_value(theAsset.value, theme_hash)
 
     unless new_asset_value
-      render json: {error: "Could not alter asset value", status: 422 }
+      @setting.error = "Theme file has been altered already making automatic installation difficult."
+      render :show
       return
     end
 
@@ -67,35 +72,45 @@ class Api::SettingsController < ShopifyApp::AuthenticatedController
       if @setting.save
         render :show
       else
-        render json: {error: "Shop not saved", status: 422 }
+        @setting.error = "Could not save shop information."
+        render :show
       end
     else
-      render json: {error: "Could not save Asset", status: 422 }
+      @setting.error = "Could not save asset file."
+      render :show
     end
 
   end
 
   def clearStickers
     @setting = Shop.find(session[:shop_id])
-
     theme_hash = get_theme_hash
 
     unless theme_hash
-      render json: {error: "Could not alter this theme", status: 422 }
+      @setting.error = "Shop's theme has not been integrated with the app for automatic deletion."
+      render :show
       return
     end
 
     theAsset = get_asset(theme_hash)
 
     unless theAsset
-      render json: {error: "No assets found", status: 422 }
+      @setting.error = "Could not find asset file."
+      render :show
+      return
+    end
+
+    unless theAsset.value.include?("staff-pick-alert")
+      @setting.error = "Could not find code to delete."
+      render :show
       return
     end
 
     new_asset_value = new_asset_value_no_sticker(theAsset.value)
 
     unless new_asset_value
-      render json: {error: "Could not alter asset value", status: 422 }
+      @setting.error = "There was difficulty reading the asset file."
+      render :show
       return
     end
 
@@ -106,10 +121,12 @@ class Api::SettingsController < ShopifyApp::AuthenticatedController
       if @setting.save
         render :show
       else
-        render json: {error: "Shop not saved", status: 422 }
+        @setting.error = "Could not save shop information."
+        render :show
       end
     else
-      render json: {error: "Could not save Asset", status: 422 }
+      @setting.error = "Could not save asset file."
+      render :show
     end
   end
 
@@ -157,7 +174,8 @@ private
     themes_hash = {
       "Debut" => {
         :sticker_file => 'product-card-grid',
-        :layout_file => 'product-template'
+        :sticker_image_class => 'grid-view-item__image',
+        :layout_file => 'product-template',
       }
     }
 
@@ -183,7 +201,7 @@ private
     end
   end
 
-  def new_asset_value(old_value)
+  def new_asset_value(old_value, theme_hash_ele)
     imgInd = old_value.index('<img')
     if (imgInd!=nil)
       stickerStr = '
@@ -191,7 +209,11 @@ private
       newStr = old_value[imgInd..-1]
       insertPoint = newStr.index('>') + imgInd + 1
       newValue = old_value.insert(insertPoint, stickerStr)
-      return newValue
+      if old_value[imgInd..insertPoint].include?(theme_hash_ele[:sticker_image_class])
+        return newValue
+      else
+        return false
+      end
     else
       return false   
     end
@@ -202,7 +224,6 @@ private
           <div class="staff-pick-alert" data-prodID="{{ product.id }}"></div>'
     stickerStrShort = '<div class="staff-pick-alert" data-prodID="{{ product.id }}"></div>'
     
-    debugger
     if old_value.slice!(stickerStr)==nil
       if old_value.slice!(stickerStrShort)!=nil
         return old_value

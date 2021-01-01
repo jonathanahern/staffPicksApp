@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_16_174514) do
+ActiveRecord::Schema.define(version: 2020_12_31_170737) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 2020_12_16_174514) do
     t.string "sticker", default: "new"
     t.boolean "sticker_theme", default: false
     t.boolean "layout_theme", default: false
+    t.string "error"
     t.index ["shopify_domain"], name: "index_shops_on_shopify_domain", unique: true
   end
 
