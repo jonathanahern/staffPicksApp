@@ -461,7 +461,7 @@ class Settings extends Component {
               >
               Add Manually
             </Button>
-            </div>
+            </ div>
             <br/>
             {this.stickerThemeAdded()}
             {this.stickerThemeCleared()}

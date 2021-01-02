@@ -38,12 +38,12 @@ class Api::SettingsController < ShopifyApp::AuthenticatedController
     theme_hash = get_theme_hash
 
     unless theme_hash
-      @setting.error = "Shop's theme has not been integrated with the app for automatic insertion."
+      @setting.error = "Shop's theme is not supported for automatic insertion."
       render :show
       return
     end
 
-    theAsset = get_asset(theme_hash)
+    theAsset = get_asset(theme_hash, "sticker")
 
     unless theAsset
       @setting.error = "Could not find asset file."
@@ -87,12 +87,12 @@ class Api::SettingsController < ShopifyApp::AuthenticatedController
     theme_hash = get_theme_hash
 
     unless theme_hash
-      @setting.error = "Shop's theme has not been integrated with the app for automatic deletion."
+      @setting.error = "Shop's theme is not supported for automatic deletion."
       render :show
       return
     end
 
-    theAsset = get_asset(theme_hash)
+    theAsset = get_asset(theme_hash, "sticker")
 
     unless theAsset
       @setting.error = "Could not find asset file."
@@ -131,39 +131,47 @@ class Api::SettingsController < ShopifyApp::AuthenticatedController
   end
 
   def insertLayout
-    foundIt = false
-    allAssets = ShopifyAPI::Asset.find(:all)
-    productGridAssets = allAssets.select do |asset|
-      asset.key.include?("product") && !(asset.key.include?("featured") || asset.key.include?("recommend") || asset.key.include?("card") || asset.key.include?("price"))
+
+    layout = params["layout"]["layout"]
+    @setting = Shop.find(session[:shop_id])
+    theme_hash = get_theme_hash
+
+    unless theme_hash
+      @setting.error = "Shop's theme is not supported for automatic insertion."
+      render :show
+      return
     end
-    assetKey = productGridAssets.first.key;
-    theAsset = ShopifyAPI::Asset.find(assetKey)
-    sideColStr = '<div id="full-container-sp">
-      <div id="main-content-sp">
-          
-	'
-    if (params[:layout][:layout] == "side-col")
-      classInd = theAsset.value.index('grid product-single')
-      divInd = theAsset.value[0..classInd].rindex('<div')
-      searchStr = theAsset.value[divInd]
 
+    theAsset = get_asset(theme_hash, "layout")
 
+    unless theAsset
+      @setting.error = "Could not find asset file."
+      render :show
+      return
+    end
 
-      newValue = theAsset.value.insert(divInd, sideColStr)
-      theAsset.value = newValue + ""
-      if theAsset.save
-        @setting = Shop.find(session[:shop_id])
-        @setting.layout = "side-col"
-        @setting.layout_theme = true
-        if @setting.save
-          render :show
-        else
-          render json: {error: "Shop not saved", status: 422 }
-        end
+    insertPoints = add_layout(theAsset.value, layout, theme_hash)
+
+    stickerStr ='
+          <div class="staff-pick-alert" data-prodID="{{ product.id }}"></div>'
+    newStr = theAsset.value.insert(insertPoints[1], "zzz")
+    # newStr2 = newStr.insert(insertPoints[0], stickerStr)
+    theAsset.value = newStr + ""
+
+    if theAsset.save
+      # @setting.sticker_theme = false
+      if @setting.save
+        render :show
       else
-        render json: {error: "Could not save theme", status: 422 }
+        @setting.error = "Could not save shop information."
+        render :show
       end
+    else
+      debugger
+      @setting.error = "Could not save asset file."
+      render :show
     end
+
   end
 
 private
@@ -176,16 +184,18 @@ private
         :sticker_file => 'product-card-grid',
         :sticker_image_class => 'grid-view-item__image',
         :layout_file => 'product-template',
+        :layout_side_div => 'grid product-single',
       }
     }
 
     return themes_hash[name]
   end
 
-  def get_asset(theme_hash_ele)
+  def get_asset(theme_hash, file)
     allAssets = ShopifyAPI::Asset.find(:all)
+    file_type = file == "layout" ? theme_hash[:layout_file] : theme_hash[:sticker_file]
     productGridAssets = allAssets.select do |asset|
-      asset.key.include?(theme_hash_ele[:sticker_file])
+      asset.key.include?(file_type)
     end
 
     if productGridAssets.length > 0
@@ -233,6 +243,72 @@ private
     else
       return old_value;
     end
+  end
+
+  def add_layout(old_value, layout_val, theme_hash)
+    # old_layout = current_layout(old_value)
+    # return false if layout_val == old_layout
+    # remove_layout(old_layout) if old_layout
+
+    if layout_val == "side-col"
+      classInd = old_value.index(theme_hash[:layout_side_div])
+      divInd = old_value[0..classInd].rindex('<div')
+      # firstHalf = old_value[0...divInd]
+      searchStr = old_value[divInd..-1]
+      divEndInd = get_closing_div_ind(searchStr) 
+      return false unless divEndInd
+      divEndInd = divEndInd + divInd + 1
+      # stickerStr = '
+      #     <div class="xxx"></div>'
+      # closeStr = '
+      #     <div class="ccc"></div>'
+      # newStart = firstHalf.insert(divInd, stickerStr)
+      # newEnd = searchStr.insert(divEndInd, closeStr)
+
+      closeInd = divInd + divEndInd + 1
+      return [divInd, closeInd]
+    elsif layout_val == "bottom-page"
+
+    elsif layout_val == "inside-col"
+
+    end
+
+  end
+
+  def get_closing_div_ind(str)
+    div_count = 1
+    (8..str.length).each do |i|
+      if str[i-2..i] == "div" && str[i-5...i-2].include?('<')
+        if str[i-3...i].include?('/')
+          div_count -= 1
+          if div_count == 0
+            divStr = str[i..-1]
+            debugger
+            return (divStr.index('>') + i)
+            break
+          end
+        else
+          div_count += 1
+        end
+      end
+    end
+    false 
+  end
+
+  def current_layout(old_value)
+    if old_value.include?("side-col")
+      return "side-col"
+    elsif old_value.include?("bottom")
+      return "bottom-page"
+    elsif old_value.include?("inside-col")
+      return "inside-col"
+    else
+      return false
+    end
+  end
+
+  def remove_layout(layout)
+
   end
 
     def setting_params
