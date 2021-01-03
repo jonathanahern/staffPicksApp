@@ -150,13 +150,8 @@ class Api::SettingsController < ShopifyApp::AuthenticatedController
       return
     end
 
-    insertPoints = add_layout(theAsset.value, layout, theme_hash)
-
-    stickerStr ='
-          <div class="staff-pick-alert" data-prodID="{{ product.id }}"></div>'
-    newStr = theAsset.value.insert(insertPoints[1], "zzz")
-    # newStr2 = newStr.insert(insertPoints[0], stickerStr)
-    theAsset.value = newStr + ""
+    newValue = add_layout(theAsset.value, layout, theme_hash)
+    theAsset.value = newValue
 
     if theAsset.save
       # @setting.sticker_theme = false
@@ -167,7 +162,6 @@ class Api::SettingsController < ShopifyApp::AuthenticatedController
         render :show
       end
     else
-      debugger
       @setting.error = "Could not save asset file."
       render :show
     end
@@ -253,20 +247,22 @@ private
     if layout_val == "side-col"
       classInd = old_value.index(theme_hash[:layout_side_div])
       divInd = old_value[0..classInd].rindex('<div')
-      # firstHalf = old_value[0...divInd]
       searchStr = old_value[divInd..-1]
       divEndInd = get_closing_div_ind(searchStr) 
       return false unless divEndInd
       divEndInd = divEndInd + divInd + 1
-      # stickerStr = '
-      #     <div class="xxx"></div>'
-      # closeStr = '
-      #     <div class="ccc"></div>'
-      # newStart = firstHalf.insert(divInd, stickerStr)
-      # newEnd = searchStr.insert(divEndInd, closeStr)
-
-      closeInd = divInd + divEndInd + 1
-      return [divInd, closeInd]
+      introStr = '
+    <div id="full-container-sp">
+      <div id="main-content-sp">
+      ';
+      closeStr = '
+    </div>
+      <div id="staff-pick-ele"></div>
+  </div>';
+      insertPoints = [divInd, divEndInd]
+      newStr = old_value.insert(insertPoints[1], closeStr)
+      newStr2 = newStr.insert(insertPoints[0], introStr)
+      return newStr2
     elsif layout_val == "bottom-page"
 
     elsif layout_val == "inside-col"
@@ -283,7 +279,6 @@ private
           div_count -= 1
           if div_count == 0
             divStr = str[i..-1]
-            debugger
             return (divStr.index('>') + i)
             break
           end
