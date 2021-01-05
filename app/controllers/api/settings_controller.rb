@@ -60,7 +60,7 @@ class Api::SettingsController < ShopifyApp::AuthenticatedController
     new_asset_value = new_asset_value(theAsset.value, theme_hash)
 
     unless new_asset_value
-      @setting.error = "Theme file has been altered already making automatic installation difficult."
+      @setting.error = "Theme file has been altered disabling automatic installation."
       render :show
       return
     end
@@ -109,7 +109,7 @@ class Api::SettingsController < ShopifyApp::AuthenticatedController
     new_asset_value = new_asset_value_no_sticker(theAsset.value)
 
     unless new_asset_value
-      @setting.error = "There was difficulty reading the asset file."
+      @setting.error = "Theme file has been altered disabling automatic installation."
       render :show
       return
     end
@@ -137,7 +137,7 @@ class Api::SettingsController < ShopifyApp::AuthenticatedController
     theme_hash = get_theme_hash
 
     unless theme_hash
-      @setting.error = "Shop's theme is not supported for automatic insertion."
+      @setting.error = "Shop's theme is not supported for automatic layout insertion."
       render :show
       return
     end
@@ -150,11 +150,18 @@ class Api::SettingsController < ShopifyApp::AuthenticatedController
       return
     end
 
-    newValue = add_layout(theAsset.value, layout, theme_hash)
+    newValue = add_layout(theAsset.value, layout, theme_hash, @setting.layout)
+    
+    unless newValue
+      @setting.error = "Theme file has been altered disabling automatic installation."
+      render :show
+      return
+    end
+
     theAsset.value = newValue
 
     if theAsset.save
-      # @setting.sticker_theme = false
+      @setting.layout = layout
       if @setting.save
         render :show
       else
@@ -179,6 +186,8 @@ private
         :sticker_image_class => 'grid-view-item__image',
         :layout_file => 'product-template',
         :layout_side_div => 'grid product-single',
+        :layout_bottom_div => 'grid product-single',
+        :layout_inside_div => 'grid__item {{',
       }
     }
 
@@ -239,34 +248,67 @@ private
     end
   end
 
-  def add_layout(old_value, layout_val, theme_hash)
-    # old_layout = current_layout(old_value)
-    # return false if layout_val == old_layout
-    # remove_layout(old_layout) if old_layout
+  INTRO_SIDECOL = '<!--  This is code from the Staff Picks App Side Column  -->
+    <div id="full-container-sp">
+      <div id="main-content-sp">
+<!--  Staff Picks App Side Column ends here  -->
+  ';
+  CLOSE_SIDECOL = '
+<!--  This is closing code from the Staff Picks App Side Column  -->
+    </div>
+      <div id="staff-pick-ele"></div>
+    </div>
+<!--  Staff Picks App Side Column ends here  -->
+  ';
+  BOTTOM_ELE = '
+<!--  This is code from the Staff Picks App Bottom Page  -->
+    <div id="staff-pick-ele"></div>
+<!--  Staff Picks App Bottom Page ends here  -->
+  ';
+  INSIDE_ELE = '
+<!--  This is code from the Staff Picks App Inside Column  -->
+    <div id="staff-pick-ele"></div>
+<!--  Staff Picks App Inside Column ends here  -->
+  ';
 
+  def add_layout(old_value, layout_val, theme_hash, layout_setting)
+    old_layout = current_layout(old_value)
+    return false if layout_val == old_layout
+    new_value = layout_setting == "none" ? old_value : remove_layout(old_value, old_layout)
+    return false if new_value == false
     if layout_val == "side-col"
-      classInd = old_value.index(theme_hash[:layout_side_div])
-      divInd = old_value[0..classInd].rindex('<div')
-      searchStr = old_value[divInd..-1]
+      classInd = new_value.index(theme_hash[:layout_side_div])
+      return false unless classInd
+      divInd = new_value[0..classInd].rindex('<div')
+      searchStr = new_value[divInd..-1]
       divEndInd = get_closing_div_ind(searchStr) 
       return false unless divEndInd
       divEndInd = divEndInd + divInd + 1
-      introStr = '
-    <div id="full-container-sp">
-      <div id="main-content-sp">
-      ';
-      closeStr = '
-    </div>
-      <div id="staff-pick-ele"></div>
-  </div>';
       insertPoints = [divInd, divEndInd]
-      newStr = old_value.insert(insertPoints[1], closeStr)
-      newStr2 = newStr.insert(insertPoints[0], introStr)
+      newStr = new_value.insert(insertPoints[1], CLOSE_SIDECOL)
+      newStr2 = newStr.insert(insertPoints[0], INTRO_SIDECOL)
       return newStr2
     elsif layout_val == "bottom-page"
-
+      classInd = new_value.index(theme_hash[:layout_bottom_div])
+      return false unless classInd
+      divInd = new_value[0..classInd].rindex('<div')
+      searchStr = new_value[divInd..-1]
+      divEndInd = get_closing_div_ind(searchStr) 
+      return false unless divEndInd
+      divEndInd = divEndInd + divInd + 1
+      newStr = new_value.insert(divEndInd, BOTTOM_ELE)
+      return newStr
     elsif layout_val == "inside-col"
-
+      classInd = new_value.index(theme_hash[:layout_inside_div])
+      return false unless classInd
+      divInd = new_value[0..classInd].rindex('<div')
+      searchStr = new_value[divInd..-1]
+      divEndInd = get_closing_div_ind(searchStr) 
+      return false unless divEndInd
+      divEndInd = divEndInd + divInd + 1
+      divEndStartInd = new_value[0..divEndInd].rindex('</')
+      newStr = new_value.insert(divEndStartInd, INSIDE_ELE)
+      return newStr
     end
 
   end
@@ -291,19 +333,36 @@ private
   end
 
   def current_layout(old_value)
-    if old_value.include?("side-col")
+    if old_value.include?(INTRO_SIDECOL) && old_value.include?(CLOSE_SIDECOL)
       return "side-col"
-    elsif old_value.include?("bottom")
+    elsif old_value.include?(BOTTOM_ELE)
       return "bottom-page"
-    elsif old_value.include?("inside-col")
+    elsif old_value.include?(INSIDE_ELE)
       return "inside-col"
     else
       return false
     end
   end
 
-  def remove_layout(layout)
-
+  def remove_layout(layout, type)
+    if (type == "side-col")
+      if layout.slice!(INTRO_SIDECOL)==nil
+          return false
+      else
+        if layout.slice!(CLOSE_SIDECOL)==nil
+          return false
+        else
+          return layout;
+        end
+      end
+    else
+      ele = type == "bottom-page" ? BOTTOM_ELE : INSIDE_ELE
+      if layout.slice!(ele)==nil
+          return false
+      else
+          return layout;
+      end
+    end
   end
 
     def setting_params

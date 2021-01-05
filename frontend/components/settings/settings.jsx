@@ -22,7 +22,7 @@ class Settings extends Component {
       sticker: this.props.settings.sticker,
       layout: this.props.settings.layout,
       sticker_theme: true,
-      layout_theme: this.props.settings.layout_theme,
+      layout_theme_error: false,
       save_loading_sticker: false,
       save_disabled_sticker: true,
       button_loading: false,
@@ -43,6 +43,7 @@ class Settings extends Component {
     this.layoutText = this.layoutText.bind(this);
     this.layoutInstructions = this.layoutInstructions.bind(this);
     this.resetPageCreation = this.resetPageCreation.bind(this);
+    this.addLayoutTheme = this.addLayoutTheme.bind(this);
 
   }
 
@@ -271,6 +272,28 @@ class Settings extends Component {
     }  
   }
 
+    layoutAdded(){
+    let response = "Layout code successfully added to theme";
+    let title = "Success";
+    let status = "success";
+    if (this.state.layout_theme_error){
+      response = `${this.props.settings.error} Either contact us for assistance or use the detailed manual installation.`
+      title = "Error";
+      status = "critical";
+    }
+    if (this.state.layout_theme_added){
+      return <>
+        <br/>
+        <br/>
+        <Banner title={title} status={status} onDismiss={() => { this.setState({ layout_theme_added: false, layout_theme_error: false }) }}>
+          <p>{response}</p>
+        </Banner>
+      </>;
+    } else {
+      return <></>;
+    }  
+  }
+
   closeStickerModal(){
     this.setState({ sticker_modal_open: false });
   }
@@ -287,16 +310,19 @@ class Settings extends Component {
   }
 
   addLayoutTheme(){
-    this.setState({ button_loading: true });
+    const old_layout = this.props.settings.layout;
+    this.setState({ button_loading: true, layout_theme_error: false, layout_theme_added: false });
     const layout_data = { layout: this.state.layout };
     this.props.insertLayout(layout_data).then(data =>
-      this.insertLayoutResp(data)
+      this.insertLayoutResp(old_layout)
     );
   }
 
-  insertLayoutResp(data){
-    this.setState({ button_loading: false });
-    console.log("Back");
+  insertLayoutResp(old_layout){
+    if (this.props.settings.layout === old_layout){
+      this.setState({ layout_theme_error: true });
+    } 
+    this.setState({ button_loading: false, layout_theme_added: true });
   }
 
   render() {
@@ -507,6 +533,8 @@ class Settings extends Component {
               >
               Add Layout Code
             </Button>
+
+            {this.layoutAdded()}
           </Card>
 
 
