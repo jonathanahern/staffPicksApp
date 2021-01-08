@@ -34,6 +34,7 @@ class Settings extends Component {
       sticker_theme_added: false,
       sticker_theme_cleared: false,
       sticker_modal_open: false,
+      layout_modal_open: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.saveSticker = this.saveSticker.bind(this);
@@ -309,6 +310,21 @@ class Settings extends Component {
     );
   }
 
+  closeLayoutModal(){
+    this.setState({ layout_modal_open: false });
+  }
+
+  openLayoutModal(){
+    this.setState({ layout_modal_open: true });
+  }
+
+  addLayoutManually(){
+    this.setState({ button_loading: true });
+    // this.props.insertStickers({auto: "manual"}).then(data =>
+    //   this.createStickerResp()
+    // );
+  }
+
   addLayoutTheme(){
     const old_layout = this.props.settings.layout;
     this.setState({ button_loading: true, layout_theme_error: false, layout_theme_added: false });
@@ -329,7 +345,7 @@ class Settings extends Component {
     let selected = this.state.sticker;
     let selectedLayout = this.state.layout;
 
-    const {save_disabled, save_loading, title_disabled, title_loading, save_disabled_sticker, save_loading_sticker, button_loading, sticker_theme, layout_theme, sticker_modal_open} = this.state;
+    const {save_disabled, save_loading, title_disabled, title_loading, save_disabled_sticker, save_loading_sticker, button_loading, sticker_theme, layout_theme, sticker_modal_open, layout_modal_open, layout} = this.state;
     const red = (
       <img
         src="https://i.ibb.co/3kW5XsV/red-burst.png"
@@ -531,7 +547,15 @@ class Settings extends Component {
               loading={button_loading}
               disabled={layout_theme}
               >
-              Add Layout Code
+              Add Automatically
+            </Button>
+            <Button
+                onClick={() => this.openLayoutModal()}
+                primary={true}
+                loading={button_loading}
+                disabled={layout_theme}
+              >
+              Add Manually
             </Button>
 
             {this.layoutAdded()}
@@ -595,6 +619,38 @@ class Settings extends Component {
           >
             <Modal.Section>
               <TextStyle variation="strong">To Setup Stickers Manually:</TextStyle>
+            <br />
+            <List type="number">
+              <List.Item>Navigate to Online Store/Themes and in the Actions dropdown click Edit code. It is also recommended to "Download theme file" for a backup.</List.Item>
+              <List.Item>Open the product-card-grid liquid file, or the file that displays the product on collection pages.</List.Item>
+              <List.Item>Locate the img element that displays the product image.</List.Item>
+              <List.Item>Copy and paste the staff-pick-alert div directly beneath the img element.</List.Item>
+              <TextField
+                value={stickerInsertion}
+                multiline={2}
+                readOnly={true}
+                helpText="The <!-- --> line is only for context and should not be pasted into your liquid files"
+              />
+              <List.Item>Once you have successfully added the code to your theme, click <span className="italics">Added</span> to save.</List.Item>
+            </List>
+            <br />
+              <Stack>
+                <Button primary={true} onClick={() => this.addStickerManually()}>
+                  Added
+                </Button>
+                <Button onClick={() => this.closeStickerModal()}>Cancel</Button>
+              </Stack>
+            </Modal.Section>
+          </Modal>
+        </AppProvider>
+        <AppProvider>
+          <Modal
+            open={layout_modal_open}
+            onClose={() => this.closeLayoutModal()}
+            title="Manual Layout Setup"
+          >
+            <Modal.Section>
+    <TextStyle variation="strong">To Setup {layout} Layout Manually:</TextStyle>
             <br />
             <List type="number">
               <List.Item>Navigate to Online Store/Themes and in the Actions dropdown click Edit code. It is also recommended to "Download theme file" for a backup.</List.Item>
