@@ -146,7 +146,6 @@ class Settings extends Component {
       default:
         return "";
     }
-
   }
 
   layoutText(){
