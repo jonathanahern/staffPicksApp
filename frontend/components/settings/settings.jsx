@@ -10,7 +10,7 @@ import {
   TextField,
   TextStyle,
   List,
-  Modal
+  Modal,
 } from "@shopify/polaris";
 
 class Settings extends Component {
