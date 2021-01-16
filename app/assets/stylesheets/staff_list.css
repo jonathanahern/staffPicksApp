@@ -112,3 +112,7 @@ a {
     display: flex;
     justify-content: space-between;
 }
+
+.on-top{
+    z-index: 1000;
+}

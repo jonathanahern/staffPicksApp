@@ -133,6 +133,19 @@ class Api::SettingsController < ShopifyApp::AuthenticatedController
   def insertLayout
 
     layout = params["layout"]["layout"]
+    method = params["layout"]["auto"]
+
+    if (method == "manual")
+      @setting.layout = layout
+      if @setting.save
+        render :show
+      else
+        @setting.error = "Shop not saved"
+        render :show
+      end
+      return
+    end
+
     @setting = Shop.find(session[:shop_id])
     theme_hash = get_theme_hash
 

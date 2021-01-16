@@ -10,7 +10,7 @@ ShopifyApp.configure do |config|
   config.shop_session_repository = 'Shop'
   config.allow_jwt_authentication = true
   config.scripttags = [
-    {event:'onload', src: 'https://16c241047cd4.ngrok.io/insert.js'}
+    {event:'onload', src: 'https://4bf672e66685.ngrok.io/insert.js'}
   ]
   # config.webhooks = [
   #   {topic: 'products/update', address: 'https://staff-picks-app.herokuapp.com/webhooks/products_update', fields: ['id','image', 'title'], format: 'json'},

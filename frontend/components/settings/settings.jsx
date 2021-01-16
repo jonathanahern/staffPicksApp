@@ -114,26 +114,46 @@ class Settings extends Component {
 
   layoutInstructions(){
     const insideCol = <List type="number">
-      <List.Item>Navigate to Online Store/Themes and in the Actions dropdown click Edit code. It is also recommended to "Download theme file" for a backup.</List.Item>
+      <List.Item>Navigate to Online Store/Themes and in the Actions dropdown click Edit code.</List.Item>
       <List.Item>Open the product-template liquid file, or the file that displays the product page.</List.Item>
       <List.Item>Locate the div or other element that contains the column.</List.Item>
-      <List.Item>Copy and paste the staff-pick-ele div into the bottom of the container element.</List.Item>
+      <List.Item>Copy and paste the staff-pick-ele div inside the bottom of the container element.</List.Item>
+      <TextField
+              value={this.layoutText()}
+              multiline={4}
+              readOnly={true}
+              helpText = "The <!-- --> lines are only for context and should not be pasted into your theme files"
+            />
+      <List.Item>Click <span className="italics">Added</span> once the code has been inserted to save your layout settings.</List.Item>
     </List>;
 
     const sideCol = <List type="number">
-      <List.Item>Navigate to Online Store/Themes and in the Actions dropdown click Edit code. It is also recommended to "Download theme file" for a backup.</List.Item>
+      <List.Item>Navigate to Online Store/Themes and in the Actions dropdown click Edit code.</List.Item>
       <List.Item>Open the product-template liquid file, or the file that displays the product page.</List.Item>
-      <List.Item>Locate the div or other element that contains the product information.</List.Item>
-      <List.Item>Wrap a main-content-sp div element around the large container element.</List.Item>
-      <List.Item>Wrap a full-container-sp div element around the main content div.</List.Item>
-      <List.Item>Between the closing div tags of the main content and full container, paste the staff-pick-ele div.</List.Item>
+      <List.Item>Locate the div or other element that contains all the product information.</List.Item>
+      <List.Item>Wrap a main-content-sp div element around the product container element and wrap a full-container-sp div element around that main content div as well.</List.Item>
+      <List.Item>Between the closing div tags of the main and full, paste the staff-pick-ele div.</List.Item>
+      <TextField
+        value={this.layoutText()}
+        multiline={4}
+        readOnly={true}
+        helpText = "The <!-- --> line is only for context and should not be pasted into your theme files"
+      />
+      <List.Item>Click <span className="italics">Added</span> once the code has been inserted to save your layout settings.</List.Item>
     </List>;
 
     const bottomPage = <List type="number">
-      <List.Item>Navigate to Online Store/Themes and in the Actions dropdown click Edit code. It is also recommended to "Download theme file" for a backup.</List.Item>
+      <List.Item>Navigate to Online Store/Themes and in the Actions dropdown click Edit code.</List.Item>
       <List.Item>Open the product-template liquid file, or the file that displays the product page.</List.Item>
       <List.Item>Locate the div or other element that contains the product information.</List.Item>
       <List.Item>Copy and paste the staff-pick-ele div directly beneath the container element.</List.Item>
+      <TextField
+        value={this.layoutText()}
+        multiline={4}
+        readOnly={true}
+        helpText = "The <!-- --> lines are only for context and should not be pasted into your theme files"
+      />
+      <List.Item>Click <span className="italics">Added</span> once the code has been inserted to save your layout settings.</List.Item>
     </List>;
 
     switch (this.state.layout) {
@@ -161,9 +181,7 @@ class Settings extends Component {
 
     const sideCol = `<div id="full-container-sp">
     <div id="main-content-sp">
-        <!-- <div>  The product container element -->
-          <!-- The product data -->
-        <!-- </div> -->
+        <!-- <div>  The product container element </div> -->
     </div>
     <div id="staff-pick-ele"></div>
 </div>`;
@@ -317,22 +335,15 @@ class Settings extends Component {
     this.setState({ layout_modal_open: true });
   }
 
-  addLayoutManually(){
-    this.setState({ button_loading: true });
-    // this.props.insertStickers({auto: "manual"}).then(data =>
-    //   this.createStickerResp()
-    // );
-  }
-
-  addLayoutTheme(){
+  addLayoutTheme(method){
     const old_layout = this.props.settings.layout;
     this.setState({ button_loading: true, layout_theme_error: false, layout_theme_added: false });
-    const layout_data = { layout: this.state.layout };
+    const layout_data = { layout: this.state.layout, auto: method };
     this.props.insertLayout(layout_data).then(data =>
       this.insertLayoutResp(old_layout)
     );
   }
-
+  
   insertLayoutResp(old_layout){
     if (this.props.settings.layout === old_layout){
       this.setState({ layout_theme_error: true });
@@ -343,6 +354,21 @@ class Settings extends Component {
   render() {
     let selected = this.state.sticker;
     let selectedLayout = this.state.layout;
+    let layoutFormatted;
+    switch (this.state.layout) {
+      case "inside-col":
+        layoutFormatted = "Inside Column";
+        break
+      case "side-col":
+        layoutFormatted = "Side Column";
+        break
+      case "bottom-page":
+        layoutFormatted = "Bottom Page";
+        break
+      default:
+        layoutFormatted = "None";
+        break
+    }
 
     const {save_disabled, save_loading, title_disabled, title_loading, save_disabled_sticker, save_loading_sticker, button_loading, sticker_theme, layout_theme, sticker_modal_open, layout_modal_open, layout} = this.state;
     const red = (
@@ -530,37 +556,27 @@ class Settings extends Component {
               />
             </Stack>
             <br />
-            <TextStyle variation="strong">To Setup:</TextStyle>
             <br/>
-            {this.layoutInstructions()}
-            <br />
-            <TextField
-              value={this.layoutText()}
-              multiline={4}
-              readOnly={true}
-              helpText = "The <!-- --> lines are only for context and should not be pasted into your liquid files"
-            />
-            <Button
-              onClick={() => this.addLayoutTheme()}
-              primary={true}
-              loading={button_loading}
-              disabled={layout_theme}
-              >
-              Add Automatically
-            </Button>
-            <Button
-                onClick={() => this.openLayoutModal()}
+            <Stack>
+              <Button
+                onClick={() => this.addLayoutTheme("auto")}
                 primary={true}
                 loading={button_loading}
                 disabled={layout_theme}
-              >
-              Add Manually
-            </Button>
-
+                >
+                Add Automatically
+              </Button>
+              <Button
+                  onClick={() => this.openLayoutModal()}
+                  primary={true}
+                  loading={button_loading}
+                  disabled={layout_theme}
+                >
+                Add Manually
+              </Button>
+            </Stack>
             {this.layoutAdded()}
           </Card>
-
-
             <br />
           <Card sectioned title="Staff Page">
             <TextStyle variation="subdued">Automatically create a page with all your staff. Give it a title, an optional subtitle, and create your custom page.</TextStyle>
@@ -643,33 +659,22 @@ class Settings extends Component {
           </Modal>
         </AppProvider>
         <AppProvider>
+          <br/><br/><br/><br/><br/>
           <Modal
             open={layout_modal_open}
             onClose={() => this.closeLayoutModal()}
             title="Manual Layout Setup"
           >
             <Modal.Section>
-    <TextStyle variation="strong">To Setup {layout} Layout Manually:</TextStyle>
+    <TextStyle variation="strong">To Setup {layoutFormatted} Layout Manually:</TextStyle>
             <br />
-            <List type="number">
-              <List.Item>Navigate to Online Store/Themes and in the Actions dropdown click Edit code. It is also recommended to "Download theme file" for a backup.</List.Item>
-              <List.Item>Open the product-card-grid liquid file, or the file that displays the product on collection pages.</List.Item>
-              <List.Item>Locate the img element that displays the product image.</List.Item>
-              <List.Item>Copy and paste the staff-pick-alert div directly beneath the img element.</List.Item>
-              <TextField
-                value={stickerInsertion}
-                multiline={2}
-                readOnly={true}
-                helpText="The <!-- --> line is only for context and should not be pasted into your liquid files"
-              />
-              <List.Item>Once you have successfully added the code to your theme, click <span className="italics">Added</span> to save.</List.Item>
-            </List>
+            {this.layoutInstructions()}
             <br />
               <Stack>
-                <Button primary={true} onClick={() => this.addStickerManually()}>
+                <Button primary={true} onClick={() => this.addLayoutTheme("manual")}>
                   Added
                 </Button>
-                <Button onClick={() => this.closeStickerModal()}>Cancel</Button>
+                <Button onClick={() => this.closeLayoutModal()}>Cancel</Button>
               </Stack>
             </Modal.Section>
           </Modal>
