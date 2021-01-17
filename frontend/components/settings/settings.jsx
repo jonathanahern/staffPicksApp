@@ -431,7 +431,6 @@ class Settings extends Component {
         width="120px"
       />
       </Stack>
-
     );
     const insideCol = (
       <Stack vertical={true} spacing="tight">
