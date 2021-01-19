@@ -140,7 +140,7 @@ class Api::SettingsController < ShopifyApp::AuthenticatedController
       if @setting.save
         render :show
       else
-        @setting.error = "Shop not saved"
+        @setting.error = "Shop could not be saved"
         render :show
       end
       return

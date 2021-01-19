@@ -24,6 +24,7 @@ class Settings extends Component {
       layout: this.props.settings.layout,
       sticker_theme: true,
       layout_theme_error: false,
+      layout_theme: true,
       save_loading_sticker: false,
       save_disabled_sticker: true,
       button_loading: false,
@@ -84,8 +85,11 @@ class Settings extends Component {
   }
 
   handleLayoutChange(checked, newVal) {
-    if (this.state.save_disabled) {
-      this.setState({ save_disabled: false });
+    console.log(this.props.settings.layout)
+    if(this.props.settings.layout === newVal){
+      this.setState({ layout_theme: true });
+    } else {
+      this.setState({ layout_theme: false });
     }
     this.setState({ layout: newVal });
   }
@@ -349,7 +353,7 @@ class Settings extends Component {
     if (this.props.settings.layout === old_layout){
       this.setState({ layout_theme_error: true });
     } 
-    this.setState({ button_loading: false, layout_theme_added: true });
+    this.setState({ button_loading: false, layout_theme_added: true, layout_theme: true });
   }
 
   render() {
@@ -535,6 +539,8 @@ class Settings extends Component {
           </Card>
           <br />
           <Card sectioned title="Select a product page layout">
+            <TextStyle>Before adding code to the theme file (whether automatic or manual), select where the staff pick should appear on the product page. Next, <span className="italics">Add Automatically</span> to allow the app to add layout code to your theme file or <span className="italics">Add Manually</span> if your theme is not compatible with setup.</TextStyle><br/>
+            <br/>
             <Stack>
               <RadioButton
                 label={sideCol}

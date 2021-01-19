@@ -32,7 +32,7 @@ module ShopifyApp
           name: "Staff Picks",
           price: 2.99,
           test: true,
-          return_url: "https://4bf672e66685.ngrok.io/activatecharge",
+          return_url: "https://a0a05d5f7be3.ngrok.io/activatecharge",
           trial_days: 7)
         if recurring_application_charge.save
           redirect_to(recurring_application_charge.confirmation_url)
