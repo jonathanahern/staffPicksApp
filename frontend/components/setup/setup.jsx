@@ -1,16 +1,9 @@
 import React, { Component } from "react";
 import {
   AppProvider,
-  Banner,
   Page,
-  Stack,
-  RadioButton,
-  Button,
   Card,
-  TextField,
   TextStyle,
-  List,
-  Icon
 } from "@shopify/polaris";
 
 class Setup extends Component {
