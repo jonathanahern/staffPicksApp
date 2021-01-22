@@ -28,8 +28,6 @@ class Settings extends Component {
       save_loading_sticker: false,
       save_disabled_sticker: true,
       button_loading: false,
-      save_loading: false,
-      save_disabled: true,
       title_loading: false,
       title_disabled: true,
       page_created: false,
@@ -38,7 +36,6 @@ class Settings extends Component {
       sticker_modal_open: false,
       layout_modal_open: false,
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.saveSticker = this.saveSticker.bind(this);
     this.handleStickerChange = this.handleStickerChange.bind(this);
     this.handleLayoutChange = this.handleLayoutChange.bind(this);
@@ -85,7 +82,6 @@ class Settings extends Component {
   }
 
   handleLayoutChange(checked, newVal) {
-    console.log(this.props.settings.layout)
     if(this.props.settings.layout === newVal){
       this.setState({ layout_theme: true });
     } else {
@@ -103,12 +99,6 @@ class Settings extends Component {
     let state = this.state;
     state[name] = value;
     this.setState({ state });
-  }
-
-  handleSubmit() {
-    const settings = Object.assign({}, this.state);
-    this.setState({ save_loading: true });
-    this.props.updateSetting(settings).then((data) => this.returnToDisabled());
   }
 
   saveSticker(){
@@ -209,11 +199,6 @@ class Settings extends Component {
     this.setState({ save_disabled_sticker: true });   
   }
 
-  returnToDisabled(){
-    this.setState({ save_loading: false });
-    this.setState({ save_disabled: true });
-  }
-
   createStickerDiv(){
     this.setState({ button_loading: true });
     this.props.insertStickers({auto: "auto"}).then(data =>
@@ -246,7 +231,7 @@ class Settings extends Component {
       return <>
         <br />
         <Banner title="Page Created" status="success" onDismiss={() => { this.setState({ page_created: false }) }}>
-          <p>A staff page has been created. Link to it for customers to meet your staff!</p>
+          <p>A staff page has been created! Find it with your other Pages under Online Store.</p>
         </Banner>
         <br />
       </>;
@@ -351,9 +336,11 @@ class Settings extends Component {
   
   insertLayoutResp(old_layout){
     if (this.props.settings.layout === old_layout){
-      this.setState({ layout_theme_error: true });
-    } 
-    this.setState({ button_loading: false, layout_theme_added: true, layout_theme: true });
+      this.setState({ layout_theme_error: true, layout_theme: false,  });
+    } else {
+      this.setState({ layout_theme: true });
+    }
+    this.setState({ button_loading: false, layout_theme_added: true });
   }
 
   render() {
@@ -375,7 +362,7 @@ class Settings extends Component {
         break
     }
 
-    const {save_disabled, save_loading, title_disabled, title_loading, save_disabled_sticker, save_loading_sticker, button_loading, sticker_theme, layout_theme, sticker_modal_open, layout_modal_open, layout} = this.state;
+    const {title_disabled, title_loading, save_disabled_sticker, save_loading_sticker, button_loading, sticker_theme, layout_theme, sticker_modal_open, layout_modal_open } = this.state;
     const red = (
       <img
         src="https://i.ibb.co/3kW5XsV/red-burst.png"
@@ -539,7 +526,7 @@ class Settings extends Component {
           </Card>
           <br />
           <Card sectioned title="Select a product page layout">
-            <TextStyle>Before adding code to the theme file (whether automatic or manual), select where the staff pick should appear on the product page. Next, <span className="italics">Add Automatically</span> to allow the app to add layout code to your theme file or <span className="italics">Add Manually</span> if your theme is not compatible with setup.</TextStyle><br/>
+            <TextStyle>Before adding code to the theme file (whether automatic or manual), select where the staff pick should appear on the product page. Next, <span className="italics">Add Automatically</span> to allow the app to add layout code to your theme file or <span className="italics">Add Manually</span> for coding instructions if your theme is not compatible with setup.</TextStyle><br/>
             <br/>
             <Stack>
               <RadioButton
@@ -562,6 +549,9 @@ class Settings extends Component {
               />
             </Stack>
             <br />
+            <Banner title="Warning"  status="warning">
+              <p>Before altering your theme's code we recommend you backup your theme files.</p>
+            </Banner>
             <br/>
             <Stack>
               <Button
@@ -619,16 +609,6 @@ class Settings extends Component {
             <br />
             {this.pageCreatedAlert()}
           </Card>
-          <br/>
-          <Button
-            primary={true}
-            loading={save_loading}
-            disabled={save_disabled}
-            onClick={this.handleSubmit}
-          >
-            Save
-          </Button>
-          <br />
           <br />
         </Page>
       </AppProvider>

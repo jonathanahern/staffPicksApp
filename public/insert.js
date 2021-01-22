@@ -117,6 +117,7 @@ function createProducts(container, data) {
 // COLLECTIONS PAGE CODE //
 function loadInStickers(){
     const settings = localStorage.getItem("staffPicksSettings");
+    
     let sticker = settings == null ? null : JSON.parse(settings)["sticker"];
     const eles = document.getElementsByClassName("staff-pick-alert");
     if (pickedProducts !== null && sticker !== "none"){
@@ -135,7 +136,6 @@ function loadInStickers(){
 }
 
 function insertPickPic(ele) {
-  
   let container = document.createElement("div");
   container.className = "starburst-container";
   container.style.margin = "2px";

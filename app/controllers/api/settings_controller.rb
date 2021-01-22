@@ -166,7 +166,7 @@ class Api::SettingsController < ShopifyApp::AuthenticatedController
     newValue = add_layout(theAsset.value, layout, theme_hash, @setting.layout)
     
     unless newValue
-      @setting.error = "Theme file has been altered disabling automatic installation."
+      @setting.error = "Theme file has been altered so that automatic installation is not possible."
       render :show
       return
     end
@@ -192,7 +192,8 @@ private
 
   def get_theme_hash
     name = ShopifyAPI::Theme.find(:all).where(role: "main").first.name
-
+    return false unless name
+    
     themes_hash = {
       "Debut" => {
         :sticker_file => 'product-card-grid',
