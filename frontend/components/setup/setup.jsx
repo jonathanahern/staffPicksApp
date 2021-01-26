@@ -100,21 +100,6 @@ class Setup extends Component {
          </Page>
        </AppProvider>
       </>;
-      // return 
-      // <>
-      //   <AppProvider>
-      //     <Page>
-      //       <Card sectioned title="Setup">
-      //           <TextStyle variation="strong">To setup the app, follow these steps:</TextStyle>
-      //           <br/>
-      //           <div className="tabbed">
-      //             <TextStyle variation={this.state.staffColor}>1. Add a staff member in the Staff tab. <span className="italics">Note: A staff's profile requires an image url, so beforehand upload a picture to Shopify Files (Settings/Files) and copy its url. </span></TextStyle><br/>
-      //             <TextStyle variation={this.state.picksColor}>2. Add a pick in the Picks tab.</TextStyle>
-      //           </div>
-      //       </Card>
-      //     </Page>
-      //   </AppProvider>
-      // </>;
     } else {
       return <></>;
     }  
