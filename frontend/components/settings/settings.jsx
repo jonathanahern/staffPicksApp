@@ -438,7 +438,7 @@ class Settings extends Component {
       <>
       <AppProvider>
         <Page title="Settings/Setup">
-          <Card sectioned title="Select a staff picks sticker for collection pages">
+          <Card sectioned title="Collection Sticker">
             <Stack>
               <RadioButton
                 label={red}
@@ -486,7 +486,7 @@ class Settings extends Component {
                 Save Sticker
             </Button>
             </Card>
-            <Card sectioned title="Add or delete sticker code in theme file">
+            <Card sectioned title="Collection Sticker Code">
             <TextStyle><span className="italics">Add Sticker Code</span> to automatically add sticker code to your theme file or <span className="italics">Add Manually</span> if your theme is not compatible with setup.</TextStyle><br/>
             <br/>
             <Banner title="Warning"  status="warning">
@@ -525,8 +525,8 @@ class Settings extends Component {
             {this.stickerThemeCleared()}
           </Card>
           <br />
-          <Card sectioned title="Select a product page layout">
-            <TextStyle>Before adding code to the theme file (whether automatic or manual), select where the staff pick should appear on the product page. Next, <span className="italics">Add Automatically</span> to allow the app to add layout code to your theme file or <span className="italics">Add Manually</span> for coding instructions if your theme is not compatible with setup.</TextStyle><br/>
+          <Card sectioned title="Layout">
+            <TextStyle>Select where the staff pick should appear on the product page, and add to theme file with <span className="italics">Add Automatically</span> or <span className="italics">Add Manually</span>.</TextStyle><br/>
             <br/>
             <Stack>
               <RadioButton
