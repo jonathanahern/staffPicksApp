@@ -99,14 +99,14 @@ class Setup extends Component {
          <Page>
            <br/>
            <Card sectioned title="Setup">
-               <TextStyle variation="strong">To setup the app, follow these steps in the listed tab:</TextStyle>
+               <TextStyle variation="strong">To setup the app, follow these steps:</TextStyle>
                <br/>
                <ul className="setup-list">
-                 <li><TextStyle variation={this.state.staffColor}>Staff: Add a staff member. <span className="italics">Note: A staff's profile requires an image url. Beforehand, upload a picture to Shopify Files (Settings/Files) and copy its url. </span></TextStyle><br/></li>
-                 <li><TextStyle variation={this.state.picksColor}>Picks: Add a pick.</TextStyle><br/></li>
-                 <li><TextStyle variation={this.state.stickerChoiceColor}>Settings: Select a sticker to place on your picks in the collection pages.</TextStyle><br/></li>
-                 <li><TextStyle variation={this.state.stickerThemeColor}>Settings: Add the sticker code to your theme file.</TextStyle><br/></li>
-                 <li><TextStyle variation={this.state.layoutThemeColor}>Settings: Select a layout for the product page and then add the layout code to your theme file. <span className="italics">Add Automatically</span> to allow the app to add code to your theme file or <span className="italics">Add Manually</span> for coding instructions if your theme is not compatible with setup.</TextStyle><br/></li>
+                 <li><TextStyle variation={this.state.staffColor}><span className="bold">Staff</span>: Add a staff member. <span className="italics">Note: A staff's profile requires an image url. Beforehand, upload a picture to Shopify Files (Settings/Files) and copy its url. </span></TextStyle><br/></li>
+                 <li><TextStyle variation={this.state.picksColor}><span className="bold">Picks</span>: Add a new pick.</TextStyle><br/></li>
+                 <li><TextStyle variation={this.state.stickerChoiceColor}><span className="bold">Settings</span>: Select a sticker to place on your picks in the collection pages.</TextStyle><br/></li>
+                 <li><TextStyle variation={this.state.stickerThemeColor}><span className="bold">Settings</span>: Add the sticker code to your theme file. <span className="italics">Add Automatically</span> to allow the app to add code to your theme file, or if your theme is not compatible <span className="italics">Add Manually</span> for coding instructions.</TextStyle><br/></li>
+                 <li><TextStyle variation={this.state.layoutThemeColor}><span className="bold">Settings</span>: Select a layout for the product page and then add the layout code to your theme file. <span className="italics">Add Automatically</span> to allow the app to add code to your theme file, or if your theme is not compatible <span className="italics">Add Manually</span> for coding instructions.</TextStyle><br/></li>
                </ul>
            </Card>
          </Page>

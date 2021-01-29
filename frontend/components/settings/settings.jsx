@@ -487,7 +487,7 @@ class Settings extends Component {
             </Button>
             </Card>
             <Card sectioned title="Collection Sticker Code">
-            <TextStyle><span className="italics">Add Sticker Code</span> to automatically add sticker code to your theme file or <span className="italics">Add Manually</span> if your theme is not compatible with setup.</TextStyle><br/>
+            <TextStyle><span className="italics">Add Sticker Code</span> to automatically add sticker code to your theme file or if your theme is not compatible <span className="italics">Add Manually</span>.</TextStyle><br/>
             <br/>
             <Banner title="Warning"  status="warning">
               <p>Before altering your theme's code we recommend you backup your theme files.</p>

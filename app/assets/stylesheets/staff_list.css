@@ -99,6 +99,10 @@ a {
     font-style: italic;
 }
 
+.bold{
+    font-weight: 800;
+}
+
 .list-image{
     width: 60px;
     max-height: 100px;

@@ -180,7 +180,7 @@ class ProductNew extends Component {
             </Link>
             <br />
             <DisplayText size="large" element="h1">
-              Add New Pick
+              Add Pick
             </DisplayText>
             <br />
             <Form onSubmit={this.handleSubmit}>

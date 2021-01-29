@@ -191,7 +191,7 @@ class ProductIndex extends React.Component {
             onClick={() => this.goToNewPick()}
             primary
           >
-            Add New Pick
+            Add Pick
           </Button>
           <br />
           <TextStyle variation="subdued">{limitError}</TextStyle>
