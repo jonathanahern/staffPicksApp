@@ -130,6 +130,7 @@ class ProductIndex extends React.Component {
     const { limitError, limitReach } = this.state;
 
     let noProducts = "";
+    
     if (this.state.loaded && this.props.products.length > 0) {
       noProducts = <TextStyle></TextStyle>;
     } else if (this.state.loaded && this.props.products.length === 0) {
